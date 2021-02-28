@@ -1,43 +1,52 @@
-def get_line_and_count(num):
-    count = 0
-    line = 0
-    num2 = num
-    for i in range(1, num2+1):
-        if num > i:
-            num -= i
-            line += 1
-        elif num == i:
-            num = i-1
-            break
-        elif num < i:
-            num -= 1
-            break
-    set_fractions(get_is_odd(line), line, num)
+def count(a,b,v):
+    day = 0
+    if v > a:
+        v = v - a
+        day += 1
+    elif v == a:
+        return 1
 
+    while v != 0:
+        if v >= (a-b)*1000000000:
+            v = v - (a-b)*1000000000
+            day += 1000000000
+        elif v >= (a-b)*100000000:
+            v = v - (a-b)*100000000
+            day += 100000000
+        elif v >= (a-b)*10000000:
+            v = v - (a-b)*10000000
+            day += 10000000
+        elif v >= (a-b)*1000000:
+            v = v - (a-b)*1000000
+            day += 1000000
+        elif v >= (a-b)*100000:
+            v = v - (a-b)*100000
+            day += 100000
+        elif v >= (a-b)*10000:
+            v = v - (a-b)*10000
+            day += 10000
+        elif v >= (a-b)*1000:
+            v = v - (a-b)*1000
+            day += 1000
+        elif v >= (a-b)*100:
+            v = v - (a-b)*100
+            day += 100
+        elif v >= (a-b)*10:
+            v = v - (a-b)*10
+            day += 10
+        elif v >= (a-b):
+            v = v - (a-b)
+            day += 1
+        elif v < (a-b):
+            v = 0
+            day += 1
 
-def get_is_odd(line):
-    if line % 2 != 0:
-        return True
-    else:
-        return False
-
-
-def set_fractions(is_odd, line, count):
-    line = line + 2
-    count = count + 1
-
-    big_num = line - count
-    small_num = count
-
-    if is_odd:
-        print("{}/{}".format(small_num, big_num))
-    else:
-        print("{}/{}".format(big_num, small_num))
+    return day
 
 
 def main():
-    num = int(input())
-    get_line_and_count(num)
+    arr = list(map(int, input().split()))
+    print(count(arr[0], arr[1], arr[2]))
 
 
 main()
