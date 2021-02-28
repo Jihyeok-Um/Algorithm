@@ -1,13 +1,9 @@
-def plus (a, b):
-    return int(a)+int(b);
+Case = int(input())
+num_list = list(map(int, input().split()))
+print(num_list)
+print('{} {}'.format(min(num_list), max(num_list)))
 
-def minus (a, b):
-    return int(a)-int(b);
-
-def multiply (a, b):
-    return int(a)*int(b);
-
-def divide (a, b):
-    return int(a)/int(b);
-
-print(plus(10, "12"));
+num = int(input())
+num_list = list(map(int, input().split()))
+num_list.sort()
+print(num_list[0], num_list[num - 1])
