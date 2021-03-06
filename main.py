@@ -1,22 +1,21 @@
+def get_count(distance):
+    i = 1
+    count = 0
+    while(distance > 0):
+        distance = distance - i
+        count += 1
+        if distance <= 0:
+            break
+        distance = distance - i
+        count += 1
+        i += 1
+    return count
+
 
 def main():
-    while(True):
+    num = int(input())
+    for i in range(1, num+1):
         a = list(map(int, input().split()))
-        if a[0] == 0 & a[1] == 0:
-            break
-        if (a[0] % a[1]) == 0:
-            print("multiple")
-        elif get_gcd(a[0], a[1]) != 1:
-            print("factor")
-        else:
-            print("neither")
-
-
-def get_gcd(num1, num2):
-    while(num2 != 0):
-        remainder = num1 % num2
-        num1 = num2
-        num2 = remainder
-    return num1
+        print(get_count(a[1]-a[0]))
 
 main()
