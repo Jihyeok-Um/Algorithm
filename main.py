@@ -1,24 +1,29 @@
-def is_prime(num):
-     if num < 2:
-        return False
-     elif num == 2 or num == 3:
-        return True
-     j = 2
-     while(j*j <= num):
-         if num % j == 0:
-             j += 1
-             return False
-         j += 1
-     return True
+def get_prime(min, max):
+    prime_store = [0 for i in range(1000000)]
+    prime_num = 0
+    array = [False for i in range(1000000)]
+
+    for i in range(2, max+1):
+        if array[i] == False:
+            prime_store[prime_num] = i
+            prime_num += 1
+        j = i*i
+        while(j <= max):
+            array[j] = True
+            j += i
+
+    for i in range(0, len(prime_store)):
+        if prime_store[i] == 0:
+            break
+        elif prime_store[i] < min:
+            continue
+        else:
+            print(prime_store[i])
 
 
 def main():
-    count = 0
-    num = int(input())
     a = list(map(int, input().split()))
-    for i in range(0, len(a)):
-        if(is_prime(a[i])):
-            count += 1
-    print(count)
+    num = a[1]
+    get_prime(a[0], a[1])
 
 main()
