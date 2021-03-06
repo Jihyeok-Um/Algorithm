@@ -1,21 +1,24 @@
-def get_count(distance):
-    i = 1
-    count = 0
-    while(distance > 0):
-        distance = distance - i
-        count += 1
-        if distance <= 0:
-            break
-        distance = distance - i
-        count += 1
-        i += 1
-    return count
+def is_prime(num):
+     if num < 2:
+        return False
+     elif num == 2 or num == 3:
+        return True
+     j = 2
+     while(j*j <= num):
+         if num % j == 0:
+             j += 1
+             return False
+         j += 1
+     return True
 
 
 def main():
+    count = 0
     num = int(input())
-    for i in range(1, num+1):
-        a = list(map(int, input().split()))
-        print(get_count(a[1]-a[0]))
+    a = list(map(int, input().split()))
+    for i in range(0, len(a)):
+        if(is_prime(a[i])):
+            count += 1
+    print(count)
 
 main()
