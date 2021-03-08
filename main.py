@@ -1,25 +1,15 @@
-array = [False for i in range(123456*2+1)]
+def short_time(x,y,w,h):
+    shortest = x
+    if (w-x < shortest):
+        shortest = w-x
+    if (y < shortest):
+        shortest = y
+    if (h-y < shortest):
+        shortest = h-y
 
-def get_prime(max):
-    for i in range(2, max+1):
-        j = i*i
-        while(j <= max):
-            array[j] = True
-            j += i
-
-def get_prime_count(value):
-    count = 0
-    for i in range(value+1, (value*2)+1):
-        if array[i] == False:
-            count += 1
-    print(count)
+    print(shortest)
 
 def main():
-    get_prime(123456*2)
-    while(True):
-        num = int(input())
-        if num == 0:
-            break
-        get_prime_count(num)
-
+    num = list(map(int,input().split()))
+    short_time(num[0],num[1],num[2],num[3])
 main()
