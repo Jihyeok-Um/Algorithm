@@ -1,13 +1,22 @@
 def main():
-    while(True):
-        num = list(map(int,input().split()))
-        if(num[0] == 0 and num[1] == 0 and num[2] == 0):
-            break
-        biggest = max(num[0], num[1], num[2])
+    years = list(map(int,input().split()))
+    count = 0
+    countE = countS = countM = 0
 
-        if(num[0]*num[0] + num[1]*num[1] + num[2]*num[2] == biggest*biggest*2):
-            print("right")
-        else:
-            print("wrong")
+    while(True):
+        count += 1
+        countE += 1
+        countS += 1
+        countM += 1
+        if countE == 16:
+            countE = 1
+        if countS == 29:
+            countS = 1
+        if countM == 20:
+            countM = 1
+        if (years[0] == countE and years[1] == countS and years[2] == countM):
+            print(count)
+            break
+
 
 main()
