@@ -1,13 +1,15 @@
 def main():
-    max = 0
-    sum = list(map(int,input().split()))
-    card = list(map(int, input().split()))
+    testCase = int(input())
+    ring = list(map(int, input().split()))
 
-    for i in range(0, len(card)):
-        for j in range(i+1, len(card)):
-            for k in range(j+1, len(card)):
-                if card[i] + card[j] + card[k] > max and card[i] + card[j] + card[k] <= sum[1]:
-                    max = card[i] + card[j] + card[k]
-    print(max)
+    for i in range(1, len(ring)):
+        a = ring[0]
+        b = ring[i]
+        reminder = 0
+        while(b != 0):
+            reminder = a % b
+            a = b
+            b = reminder
+        print("{}/{}".format(int(ring[0]/a),(int(ring[i]/a))))
 
 main()
