@@ -1,22 +1,13 @@
 def main():
-    years = list(map(int,input().split()))
-    count = 0
-    countE = countS = countM = 0
+    max = 0
+    sum = list(map(int,input().split()))
+    card = list(map(int, input().split()))
 
-    while(True):
-        count += 1
-        countE += 1
-        countS += 1
-        countM += 1
-        if countE == 16:
-            countE = 1
-        if countS == 29:
-            countS = 1
-        if countM == 20:
-            countM = 1
-        if (years[0] == countE and years[1] == countS and years[2] == countM):
-            print(count)
-            break
-
+    for i in range(0, len(card)):
+        for j in range(i+1, len(card)):
+            for k in range(j+1, len(card)):
+                if card[i] + card[j] + card[k] > max and card[i] + card[j] + card[k] <= sum[1]:
+                    max = card[i] + card[j] + card[k]
+    print(max)
 
 main()
