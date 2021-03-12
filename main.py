@@ -1,15 +1,21 @@
 def main():
-    testCase = int(input())
-    ring = list(map(int, input().split()))
+    num = list(map(int, input().split()))
+    nominator = num[0]
+    denominator = num[1]
 
-    for i in range(1, len(ring)):
-        a = ring[0]
-        b = ring[i]
-        reminder = 0
-        while(b != 0):
-            reminder = a % b
-            a = b
-            b = reminder
-        print("{}/{}".format(int(ring[0]/a),(int(ring[i]/a))))
+
+    for i in range(num[1]-1):
+        if denominator == 0:
+            break
+        num[0] = num[0]-1
+        num[1] = num[1]-1
+        nominator *= (num[0])
+        denominator *= (num[1])
+        print("{} {}".format(nominator,denominator))
+
+    if denominator == 0:
+        print(1)
+    else:
+        print("{}".format(int(nominator/denominator)))
 
 main()
