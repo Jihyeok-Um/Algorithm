@@ -1,4 +1,4 @@
-def getNextPermutations(array):
+def getNextPermutations(array, cost):
     i = len(array) - 1
     while (i > 0 and array[i - 1] >= array[i]):
         i -= 1
@@ -16,40 +16,40 @@ def getNextPermutations(array):
         i += 1
         j -= 1
 
+    getCombination(array, cost)
     return array
 
+def getCombination(array, cost):
+    result = []
+    for i in range(0, len(array)):
+        if array[i] == 0:
+            result.append(cost[i])
 
-def getTSP(cities, count, cost):
-    sum = 0
-    for i in range(0, cities-1):
-        if cost[count[i]][count[i+1]] != 0:
-            sum += cost[count[i]][count[i+1]]
-        else:
-            return -1
+    for i in range(len(result)):
+        print(result[i], end=' ')
+    print("")
 
-    if cost[count[i+1]][count[0]] != 0:
-        sum += cost[count[i+1]][count[0]]
-    else:
-        return -1
-
-    return sum
 
 def main():
-    cities = int(input())
-    count = [i for i in range(cities)]
-    cost = []
-    result = 10000000
-    for i in range(cities):
-        cost.append(list(map(int, input().split())))
-
     while(True):
-        temp = getTSP(cities, count, cost)
-        if temp != -1:
-            result = min(temp,result)
-        count = getNextPermutations(count)
-        if (count == 0):
+        cost = list(map(int, input().split()))
+        if cost[0] == 0:
             break
+        array2 = []
+        for i in range(0, cost[0]):
+            if i < 6:
+                array2.append(0)
+            else:
+                array2.append(1)
 
-    print(result)
+        cost.remove(cost[0])
+        cost.sort()
+        array2.sort()
+        getCombination(array2, cost)
+        while(True):
+            count = getNextPermutations(array2, cost)
+            if (count == 0):
+                print("")
+                break
 
 main()
