@@ -1,55 +1,26 @@
-def getNextPermutations(array, cost):
-    i = len(array) - 1
-    while (i > 0 and array[i - 1] >= array[i]):
-        i -= 1
-    if (i == 0):
+import sys
+
+def getSum(num, current, addNum):
+    current = current + addNum
+
+    if num < current:
         return 0
+    elif num == current:
+        return 1
 
-    j = len(array) - 1
-    while (array[j] <= array[i - 1]):
-        j -= 1
-    array[j], array[i - 1] = array[i - 1], array[j]
+    count = 0
+    for i in range(1,4):
+        sys.setrecursionlimit(200000)
+        count += getSum(num, current, i)
 
-    j = len(array) - 1
-    while (i <= j):
-        array[j], array[i] = array[i], array[j]
-        i += 1
-        j -= 1
-
-    getCombination(array, cost)
-    return array
-
-def getCombination(array, cost):
-    result = []
-    for i in range(0, len(array)):
-        if array[i] == 0:
-            result.append(cost[i])
-
-    for i in range(len(result)):
-        print(result[i], end=' ')
-    print("")
+    return count
 
 
 def main():
-    while(True):
-        cost = list(map(int, input().split()))
-        if cost[0] == 0:
-            break
-        array2 = []
-        for i in range(0, cost[0]):
-            if i < 6:
-                array2.append(0)
-            else:
-                array2.append(1)
+    testCase = int(input())
 
-        cost.remove(cost[0])
-        cost.sort()
-        array2.sort()
-        getCombination(array2, cost)
-        while(True):
-            count = getNextPermutations(array2, cost)
-            if (count == 0):
-                print("")
-                break
+    for i in range(testCase):
+        num = int(input())
+        print(getSum(num, 0, 0))
 
 main()
