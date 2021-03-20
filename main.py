@@ -1,32 +1,26 @@
 import sys
-sys.setrecursionlimit(200000)
+pa = 0
 
-def getLottoNum(count, array, lotto, i):
-    if (i == count):
-        if (len(lotto) == 6):
-            for i in range(len(lotto)):
-                print(lotto[i], end=' ')
-            print("")
+def getSmallArray(howManyNum, array, currentSum, goalSum, count, add):
+    if (count == howManyNum):
+        if (currentSum == goalSum and add > 0):
+            global pa
+            pa += 1
         return 0
 
-    lotto.append(array[i])
-    getLottoNum(count, array, lotto, i+1)
-    lotto.remove(lotto[len(lotto)-1])
-    getLottoNum(count, array, lotto, i + 1)
-
+    sys.setrecursionlimit(200000)
+    getSmallArray(howManyNum, array, currentSum+array[count], goalSum, count+1, add+1)
+    getSmallArray(howManyNum, array, currentSum, goalSum, count+1, add)
 
 def main():
-    while(True):
-        i = 0
-        lotto = []
-        array = list(map(int, input().split()))
-        if array[0] == 0:
-            return 0
-        count = array[0]
-        array.remove(array[0])
-        array.sort()
-
-        getLottoNum(count, array, lotto, i)
-        print("")
+    temp = list(map(int, input().split()))
+    howManyNum = temp[0]
+    goalSum = temp[1]
+    array = list(map(int, input().split()))
+    currentSum = 0
+    count = 0
+    add = 0
+    getSmallArray(howManyNum, array, currentSum, goalSum, count, add)
+    print(pa)
 
 main()
