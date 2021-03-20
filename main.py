@@ -1,26 +1,38 @@
 import sys
+sys.setrecursionlimit(200000)
 
-def getSum(num, current, addNum):
-    current = current + addNum
+def check(current):
+    ja = 0
+    mo = 0
+    for i in current:
+        if (i == 'a' or i == 'e' or i == 'i' or i == 'o' or i == 'u'):
+            mo += 1
+        else:
+            ja += 1
 
-    if num < current:
+    if (mo >= 1 and ja >= 2):
+        return True
+    else:
+        return False
+
+
+def getPassword(alpha,current,numOfAlpha, count):
+    if (len(current) == numOfAlpha[0]):
+        if check(current):
+            print(current)
         return 0
-    elif num == current:
-        return 1
 
-    count = 0
-    for i in range(1,4):
-        sys.setrecursionlimit(200000)
-        count += getSum(num, current, i)
-
-    return count
-
+    if (count >= len(alpha)):
+        return 0
+    getPassword(alpha, current+alpha[count], numOfAlpha, count + 1)
+    getPassword(alpha, current, numOfAlpha, count + 1)
 
 def main():
-    testCase = int(input())
-
-    for i in range(testCase):
-        num = int(input())
-        print(getSum(num, 0, 0))
+    count = 0
+    current = ""
+    numOfAlpha = list(map(int,input().split()))
+    alpha = list(map(str,input().split()))
+    alpha.sort()
+    getPassword(alpha,current, numOfAlpha, count)
 
 main()
