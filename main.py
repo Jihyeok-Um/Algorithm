@@ -1,23 +1,24 @@
-def getMollaSum(num):
-    temp = num
-    sum = 0
-    j = 10
-    result = 0
-    for i in range(temp):
-        num -= i
-        temp2 = num
-        while (num % 1 != num):
-            sum += (num % 10)
-            num = int(num / 10)
-        if (temp == sum + temp2):
-            result = temp2
-        sum = 0
-        num = temp
+def ddungci(hArray, wArray, nArray):
+    for i in range(0, len(hArray)):
+        for j in range(0, len(hArray)):
+            if (hArray[i] > hArray[j] and wArray[i] > wArray[j]):
+                nArray[j] += 1
 
-    print(result)
+    for i in nArray:
+        print(i, end=' ')
 
 def main():
     num = int(input())
-    getMollaSum(num)
+    nArray = []
+    hArray = []
+    wArray = []
+    for i in range(num):
+        nArray.append(1)
+    for i in range(num):
+        h,w = list(map(int, input().split()))
+        hArray.append(h)
+        wArray.append(w)
+
+    ddungci(hArray, wArray, nArray)
 
 main()
