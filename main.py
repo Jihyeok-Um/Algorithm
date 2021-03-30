@@ -6,10 +6,11 @@ for i in range(edge):
     matrix[b].append(a)
 visitList = [0] * (node+1)
 
+
 def dfs(vertex):
     visitList[vertex]=1
     print(vertex, end=' ')
-    for i in range(1, node+1):
+    for i in range(0, node+1):
         if(visitList[i]==0):
             for j in range(0, len(matrix[vertex])):
                 if (matrix[vertex][j] == i):
@@ -22,7 +23,7 @@ def bfs(vertex):
     while queue:
         vertex=queue.pop(0)
         print(vertex, end=' ')
-        for i in range(1, node+1):
+        for i in range(0, node+1):
             if(visitList[i]==0):
                 for j in range(0, len(matrix[vertex])):
                     if (matrix[vertex][j] == i):
