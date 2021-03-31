@@ -1,25 +1,34 @@
-import sys
-sys.setrecursionlimit(100000)
+from itertools import permutations
 
-node, edge = map(int, input().split())
-count = 1
-matrix = [[0]*(node+1) for i in range(node+1)]
-for i in range(edge):
-    a,b = map(int, input().split())
-    matrix[a][b] = 1
-    matrix[b][a] = 1
-visitList = [0 for i in range(node+1)]
+n = int(input())
 
-def bfs(vertex):
-    visitList[vertex] = 1
-    for i in range(1, node+1):
-        if (visitList[i] == 0 and matrix[vertex][i] == 1):
-            bfs(i)
+d = []
+for i in range(n):
+    d.append([int(a) for a in input().split()])
 
-bfs(1)
-for i in range(1, len(visitList)):
-    if (visitList[i] == 0):
-        count += 1
-        bfs(i)
-        i = 1
-print(count)
+perm = [i for i in range(n)]
+
+answer = 9123491234
+
+def sum_routes(r):
+    global d,n
+    tmp = 0
+    for i in range(len(r)-1):
+        if d[r[i]][r[i+1]] != 0:
+            tmp += d[r[i]][r[i+1]]
+        else:
+            return -1
+
+    if d[r[-1]][r[0]] == 0:
+        return  -1
+    else:
+        tmp += d[r[-1]][r[0]]
+
+    return tmp
+
+for c in permutations(perm):
+    tmpans = sum_routes(c)
+    if tmpans != -1:
+        answer = min(answer, tmpans)
+
+print(answer)
