@@ -1,34 +1,32 @@
-from itertools import permutations
+import sys
+sys.setrecursionlimit(10000)
+vertexList = []
 
-n = int(input())
+def dfs(vertex, c):
+    visitList[vertex] = 1
+    color[vertex] = c
+    vertexList.append(vertex)
+    for i in range(1, node+1):
+        if(visitList[i]==0):
+            for j in range(0, len(matrix[vertex])):
+                if (matrix[vertex][j] == i):
+                    dfs(i, 3-c)
 
-d = []
-for i in range(n):
-    d.append([int(a) for a in input().split()])
+num = int(input())
 
-perm = [i for i in range(n)]
+for i in range(num):
+    node, edge = map(int, input().split())
+    matrix = [[] for i in range(node + 1)]
+    check = True
+    for i in range(edge):
+        a, b = map(int, input().split())
+        matrix[a].append(b)
+        matrix[b].append(a)
+    visitList = [0 for i in range(node+1)]
+    color = [0 for i in range(node+1)]
 
-answer = 9123491234
-
-def sum_routes(r):
-    global d,n
-    tmp = 0
-    for i in range(len(r)-1):
-        if d[r[i]][r[i+1]] != 0:
-            tmp += d[r[i]][r[i+1]]
-        else:
-            return -1
-
-    if d[r[-1]][r[0]] == 0:
-        return  -1
+    dfs(1, 1)
+    if (check):
+        print("YES")
     else:
-        tmp += d[r[-1]][r[0]]
-
-    return tmp
-
-for c in permutations(perm):
-    tmpans = sum_routes(c)
-    if tmpans != -1:
-        answer = min(answer, tmpans)
-
-print(answer)
+        print("NO")
