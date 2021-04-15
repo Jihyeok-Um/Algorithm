@@ -1,47 +1,46 @@
-max = 1
-
-def swapCandy(array):
-    global num
-    for i in range(0, num):
-        for j in range(0, num-1):
-            array[i][j], array[i][j+1] = array[i][j+1], array[i][j]
-            checkCandy(array)
-            array[i][j], array[i][j+1] = array[i][j+1], array[i][j]
-
-    for i in range(0, num):
-        for j in range(0, num-1):
-            array[j][i], array[j+1][i] = array[j+1][i], array[j][i]
-            checkCandy(array)
-            array[j][i], array[j+1][i] = array[j+1][i], array[j][i]
-
-def checkCandy(array):
-    global max
-    current = 1
-    for i in range(0, num):
-        current = 1
-        for j in range(0, num-1):
-            if (array[i][j] == array[i][j+1]):
-                current += 1
-                if (current > max):
-                    max = current
-            else:
-                current = 1
-
-    for i in range(0, num):
-        current = 1
-        for j in range(0, num-1):
-            if (array[j][i] == array[j+1][i]):
-                current += 1
-                if (current > max):
-                    max = current
-            else:
-                current = 1
-
-
 num = int(input())
-outerArray = []
-for i in range(num):
-    outerArray.append(list(input()))
+start = 100
+min_ = 10000000
+channelList = []
+brokenNum = int(input())
+if (brokenNum != 0):
+    broken = list(map(int, input().split()))
+else:
+    broken = []
+count_ = 0
+value_ = 0
 
-swapCandy(outerArray)
-print(max)
+def makeChannel(broken):
+    global channelList
+    for i in range(1000001):
+        if (isBroken(i,broken)):
+            channelList.append(i)
+
+def isBroken(channel, broken):
+    if (channel == 0):
+        if (broken.count(0) != 0):
+            return False
+
+    while(channel != 0):
+        if (broken.count(int(channel % 10)) != 0):
+            return False
+        channel = int(channel / 10)
+    return True
+
+temp = abs(num - start)
+makeChannel(broken)
+for i in range(0, len(channelList)):
+    count_ = 0
+    if (channelList[i] == 0):
+        count_ = 1
+    value_ = abs(num - channelList[i])
+    while(channelList[i] != 0):
+        channelList[i] = int(channelList[i] / 10)
+        count_ += 1
+
+    min_ = min(min_, min(count_+value_, temp))
+if (len(channelList) == 0):
+    print(temp)
+else:
+    print(min_)
+
