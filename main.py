@@ -1,14 +1,6 @@
-testCase = int(input())
-for i in range(testCase):
-    M,N,x,y = map(int,input().split())
-    x -= 1
-    y -= 1
-    temp = x
-    while temp < N*M:
-        if temp % N == y:
-            print(temp+1)
-            break
-        temp += M
-    else:
-        print(-1)
-
+array = list(map(int,input().split()))
+result = 0
+for i in range(0, len(array)):
+    array[i] = array[i]*array[i]
+    result += array[i]
+print(result % 10)
