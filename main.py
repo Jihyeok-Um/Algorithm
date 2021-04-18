@@ -1,18 +1,18 @@
-temp = int(input())
-startNum = 1
-endNum = 9
-count = 1
-result = 0
-while (endNum < temp*10):
-    if (endNum < temp):
-        result += (endNum - startNum + 1) * count
-        startNum *= 10
-        endNum = (endNum * 10) + 9
-        count += 1
-    elif (endNum > temp):
-        endNum = temp
-        result += (endNum - startNum + 1) * count
-    else:
-        break
+import sys
+n,m = map(int,input().split())
+c = [False]*(n+1)
+a = [0]*m
 
-print(result)
+def go(index, n, m):
+    if index == m:
+        sys.stdout.write(' '.join(map(str,a))+'\n')
+        return
+    for i in range(1, n+1):
+        if c[i]:
+            continue
+        c[i] = True
+        a[index] = i
+        go(index+1, n, m)
+        c[i] = False
+
+go(0,n,m)
