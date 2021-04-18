@@ -1,6 +1,18 @@
-array = list(map(int,input().split()))
+temp = int(input())
+startNum = 1
+endNum = 9
+count = 1
 result = 0
-for i in range(0, len(array)):
-    array[i] = array[i]*array[i]
-    result += array[i]
-print(result % 10)
+while (endNum < temp*10):
+    if (endNum < temp):
+        result += (endNum - startNum + 1) * count
+        startNum *= 10
+        endNum = (endNum * 10) + 9
+        count += 1
+    elif (endNum > temp):
+        endNum = temp
+        result += (endNum - startNum + 1) * count
+    else:
+        break
+
+print(result)
