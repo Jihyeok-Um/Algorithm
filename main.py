@@ -11,14 +11,15 @@ max_ = -100000000
 for i in range(n):
     matrix.append(list(map(int, input().split())))
 
-def getScore(index,temp):
+def getScore(startX, startY, index, temp):
     global max_
     if (index == z):
+        print(check)
         max_ = max(max_,temp)
         return
 
-    for i in range(0,n):
-        for j in range(0,m):
+    for i in range(startX,n):
+        for j in range(startY if i == startX else 0,m):
             if (check[i][j]):
                 continue
             ok = True
@@ -28,8 +29,8 @@ def getScore(index,temp):
                         ok = False
             if ok:
                 check[i][j] = True
-                getScore(index+1,temp+matrix[i][j])
+                getScore(i,j, index+1,temp+matrix[i][j])
                 check[i][j] = False
 
-getScore(0,0)
+getScore(0,0,0,0)
 print(max_)
