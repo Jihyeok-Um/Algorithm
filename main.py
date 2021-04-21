@@ -1,22 +1,35 @@
 import sys
-n,m = map(int,input().split())
+limit_number = 150000
+sys.setrecursionlimit(limit_number)
 
-c = [0]*(n+1)
-a = [0]*m
+n,m,z = map(int,input().split())
+matrix = []
+check = [[False for _ in range(m)] for _ in range(n)]
+dy = [-1, 1, 0, 0]
+dx = [0, 0, -1, 1]
+max_ = -100000000
+for i in range(n):
+    matrix.append(list(map(int, input().split())))
 
-def go(index, n, m):
-    if index == m:
-        for i in range(1, index):
-            if (a[i] < a[i-1]):
-                return
-        sys.stdout.write(' '.join(map(str,a))+'\n')
+def getScore(index,temp):
+    global max_
+    if (index == z):
+        max_ = max(max_,temp)
         return
-    for i in range(1, n+1):
-        if c[i] == m:
-            continue
-        c[i] += 1
-        a[index] = i
-        go(index+1, n, m)
-        c[i] = 0
 
-go(0,n,m)
+    for i in range(0,n):
+        for j in range(0,m):
+            if (check[i][j]):
+                continue
+            ok = True
+            for k in range(0, 4):
+                if (0 <= i + dx[k] < n and 0 <= j + dy[k] < m):
+                    if (check[i + dx[k]][j + dy[k]]):
+                        ok = False
+            if ok:
+                check[i][j] = True
+                getScore(index+1,temp+matrix[i][j])
+                check[i][j] = False
+
+getScore(0,0)
+print(max_)
