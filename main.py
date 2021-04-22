@@ -1,36 +1,36 @@
 import sys
-limit_number = 150000
+limit_number = 15000
 sys.setrecursionlimit(limit_number)
-
-n,m,z = map(int,input().split())
+line = int(input())
 matrix = []
-check = [[False for _ in range(m)] for _ in range(n)]
-dy = [-1, 1, 0, 0]
-dx = [0, 0, -1, 1]
-max_ = -100000000
-for i in range(n):
+check = [[False for j in range(line)]for i in range(line)]
+teamA = teamB = 0
+ans = 100000
+for i in range(line):
     matrix.append(list(map(int, input().split())))
 
-def getScore(startX, startY, index, temp):
-    global max_
-    if (index == z):
-        print(check)
-        max_ = max(max_,temp)
+def getScore(index, addA, teamA, teamB):
+    global ans
+    if (addA > line/2):
         return
 
-    for i in range(startX,n):
-        for j in range(startY if i == startX else 0,m):
-            if (check[i][j]):
+    if (index == line):
+        if(addA == line/2):
+            ans = min(abs(teamA - teamB),ans)
+            print(ans)
+            return
+
+    for y in range(0,line):
+        for x in range(0,line):
+            if (x == y):
                 continue
-            ok = True
-            for k in range(0, 4):
-                if (0 <= i + dx[k] < n and 0 <= j + dy[k] < m):
-                    if (check[i + dx[k]][j + dy[k]]):
-                        ok = False
-            if ok:
-                check[i][j] = True
-                getScore(i,j, index+1,temp+matrix[i][j])
-                check[i][j] = False
+            if (check[y][x]):
+                continue
+
+            check[x][y] = check[y][x] = True
+            getScore(index+1,addA+1, teamA+matrix[x][y]+matrix[y][x], teamB)
+            getScore(index+1,addA, teamA,teamB+matrix[x][y]+matrix[y][x])
+            check[x][y] = check[y][x] = False
 
 getScore(0,0,0,0)
-print(max_)
+print(ans)
