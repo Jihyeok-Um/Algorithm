@@ -12,17 +12,14 @@ def getScore(index, teamA, teamB):
     global ans
     aScore = bScore = 0
     if(index == line):
-        if(line / 2 != len(teamA)):
-            return
-        if(line / 2 != len(teamB)):
-            return
-
-        for y in range(0, len(teamA)):
-            for x in range(0, len(teamA)):
+        for y in range(0, line):
+            for x in range(0, line):
                 if (x==y):
                     continue
-                aScore += matrix[teamA[y]][teamA[x]]
-                bScore += matrix[teamB[y]][teamB[x]]
+                if (x < len(teamA) and y < len(teamA)):
+                    aScore += matrix[teamA[y]][teamA[x]]
+                if (x < len(teamB) and y < len(teamB)):
+                    bScore += matrix[teamB[y]][teamB[x]]
         ans = min(abs(aScore-bScore),ans)
         return
 
