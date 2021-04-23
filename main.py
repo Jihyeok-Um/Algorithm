@@ -1,30 +1,41 @@
 import sys
-limit_number = 15000
-sys.setrecursionlimit(limit_number)
-line = int(input())
-matrix = []
-ans = 100000
-for i in range(line):
-    matrix.append(list(map(int, input().split())))
+sys.setrecursionlimit(15000)
+num = int(input())
+array = list(map(str, input().split()))
+numChar = ['0','1','2','3','4','5','6','7','8','9']
+numCheck = [False for i in range(10)]
+count = last = 0
+min_ = max_ = 0
 
+def go(numArray):
+    global count
+    global min_, max_
+    if(len(numArray) == len(array)+1):
+        for i in range(0, len(array)):
+            if (array[i] == '>'):
+                if (numArray[i] < numArray[i+1]):
+                    return
+            elif (array[i] == '<'):
+                if (numArray[i] > numArray[i+1]):
+                    return
 
-def getScore(index, teamA, teamB):
-    global ans
-    aScore = bScore = 0
-    if(index == line):
-        for y in range(0, line):
-            for x in range(0, line):
-                if (x==y):
-                    continue
-                if (x < len(teamA) and y < len(teamA)):
-                    aScore += matrix[teamA[y]][teamA[x]]
-                if (x < len(teamB) and y < len(teamB)):
-                    bScore += matrix[teamB[y]][teamB[x]]
-        ans = min(abs(aScore-bScore),ans)
+        ans = ""
+        for i in range(len(numArray)):
+            ans += str(numArray[i])
+        if (count == 0):
+            min_ = ans
+        count += 1
+        if (last < count):
+            max_ = ans
         return
 
-    getScore(index+1, teamA+[index], teamB)
-    getScore(index+1, teamA, teamB+[index])
+    for i in range(0, 10):
+        if (numCheck[i] == True):
+            continue
+        numCheck[i] = True
+        go(numArray+[i])
+        numCheck[i] = False
 
-getScore(0, [], [])
-print(ans)
+go([])
+print(max_)
+print(min_)
