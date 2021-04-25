@@ -1,41 +1,50 @@
 import sys
-sys.setrecursionlimit(15000)
-num = int(input())
-array = list(map(str, input().split()))
-numChar = ['0','1','2','3','4','5','6','7','8','9']
-numCheck = [False for i in range(10)]
-count = last = 0
-min_ = max_ = 0
+s = 0
+count = int(input())
 
-def go(numArray):
-    global count
-    global min_, max_
-    if(len(numArray) == len(array)+1):
-        for i in range(0, len(array)):
-            if (array[i] == '>'):
-                if (numArray[i] < numArray[i+1]):
-                    return
-            elif (array[i] == '<'):
-                if (numArray[i] > numArray[i+1]):
-                    return
+def add(num):
+    num = int(num[0]) - 1
+    global s
+    s = (s | (1 << num))
 
-        ans = ""
-        for i in range(len(numArray)):
-            ans += str(numArray[i])
-        if (count == 0):
-            min_ = ans
-        count += 1
-        if (last < count):
-            max_ = ans
-        return
+def remove(num):
+    num = int(num[0]) - 1
+    global s
+    s = (s & ~(1 << num))
 
-    for i in range(0, 10):
-        if (numCheck[i] == True):
-            continue
-        numCheck[i] = True
-        go(numArray+[i])
-        numCheck[i] = False
+def check(num):
+    num = int(num[0]) - 1
+    global s
+    if (s & (1<<num)):
+        print(1)
+    else:
+        print(0)
 
-go([])
-print(max_)
-print(min_)
+def toggle(num):
+    num = int(num[0]) - 1
+    global s
+    s = (s ^ (1<<num))
+
+def all_():
+    global s
+    s = (1 << 20) - 1
+
+def empty():
+    global s
+    s = 0
+
+while(count != 0):
+    count -= 1
+    func, *num = sys.stdin.readline().split()
+    if (func == "add"):
+        add(num)
+    if (func == "remove"):
+        remove(num)
+    if (func == "check"):
+        check(num)
+    if (func == "toggle"):
+        toggle(num)
+    if (func == "all"):
+        all_()
+    if (func == "empty"):
+        empty()
