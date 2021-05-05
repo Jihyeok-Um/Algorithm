@@ -1,50 +1,78 @@
-import sys
-s = 0
-count = int(input())
+n = int(input())
 
-def add(num):
-    num = int(num[0]) - 1
-    global s
-    s = (s | (1 << num))
+matrix = []
+for i in range(n):
+    matrix.append([False for i in range(n)])
 
-def remove(num):
-    num = int(num[0]) - 1
-    global s
-    s = (s & ~(1 << num))
+def queen(count, y,x):
+    if (matrix[y][x] == True):
+        if (x < n-1):
+            queen(count,y,x+1)
+            return
+        elif (y < n-1):
+            queen(count,y+1,0)
+            return
+        else:
+            print(count)
+            return
 
-def check(num):
-    num = int(num[0]) - 1
-    global s
-    if (s & (1<<num)):
-        print(1)
+    for i in range (n):
+        if (matrix[y][i] == True):
+            return
+        matrix[y][i] = True
+    matrix[y][x] = False
+    for i in range (n):
+        if (matrix[i][x] == True):
+            return
+        matrix[i][x] = True
+
+    a=b=c=d = False
+    donePoint = 0
+    i = 0
+    while(donePoint != 4):
+        i += 1
+        if(x-i > 0 and y-i > 0 and a == False):
+            if(matrix[y-i][x-i] == True):
+                return
+            matrix[y-i][x-i] = True
+        else:
+            if (a == False):
+                donePoint += 1
+                a = True
+
+        if (x+i <= n-1 and y-i > 0 and b == False):
+            if (matrix[y-i][x+i] == True):
+                return
+            matrix[y-i][x+i] = True
+        else:
+            if (b == False):
+                donePoint += 1
+                b = True
+
+        if (x-i > 0 and y+i <= n-1 and c == False):
+            if (matrix[y+i][x-i] == True):
+                return
+            matrix[y+i][x-i] = True
+        else:
+            if (c == False):
+                donePoint += 1
+                c = True
+
+        if (x+i <= n-1 and y+i <= n-1 and d == False):
+            if (matrix[y+i][x+i] == True):
+                return
+            matrix[y+i][x+i] = True
+        else:
+            if (d == False):
+                donePoint += 1
+                d = True
+
+    if (x < n-1):
+        queen(count+1, y, x + 1)
+    elif (y < n-1):
+        queen(count+1, y + 1, 0)
     else:
-        print(0)
+        print(count+1)
+        return
 
-def toggle(num):
-    num = int(num[0]) - 1
-    global s
-    s = (s ^ (1<<num))
-
-def all_():
-    global s
-    s = (1 << 20) - 1
-
-def empty():
-    global s
-    s = 0
-
-while(count != 0):
-    count -= 1
-    func, *num = sys.stdin.readline().split()
-    if (func == "add"):
-        add(num)
-    if (func == "remove"):
-        remove(num)
-    if (func == "check"):
-        check(num)
-    if (func == "toggle"):
-        toggle(num)
-    if (func == "all"):
-        all_()
-    if (func == "empty"):
-        empty()
+queen(0,0,0)
