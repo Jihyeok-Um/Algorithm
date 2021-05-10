@@ -1,12 +1,8 @@
-testCase = int(input())
-d = [0]*11
-d[1] = 1
-d[2] = 2
-d[3] = 4
+n = int(input())
+card = [0] + list(map(int, input().split()))
+d = [0]*(n+1)
+for i in range(1, n+1):
+    for j in range(1, i+1):
+         d[i] = max(d[i], d[i-j]+card[j])
 
-for i in range(testCase):
-    n = int(input())
-    if(n >= 4):
-        for i in range(4, n+1):
-            d[i] = d[i-1]+d[i-2]+d[i-3]
-    print(d[n])
+print(d[n])
