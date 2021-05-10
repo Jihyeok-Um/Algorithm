@@ -1,19 +1,10 @@
-import sys
-sys.setrecursionlimit(100000)
-
-def fibonaci(num):
-    if (num == 0):
-        return 0
-    if (num == 1):
-        d[num] = 1
-        return d[num]
-    if (d[num] != 0):
-        return d[num]
-    else:
-        d[num] = fibonaci(num-1) + fibonaci(num-2)
-        return d[num]
-
-d = [0 for i in range(10001)]
-num = int(input())
-fibonaci(num)
-print(d[num])
+n = int(input())
+d = [0]*(n+1)
+d[1] = 0
+for i in range(2, n+1):
+    d[i] = d[i-1] + 1
+    if i%2 == 0 and d[i] >= d[i//2] + 1:
+        d[i] = d[i//2] + 1
+    if i%3 == 0 and d[i] >= d[i//3] + 1:
+        d[i] = d[i//3] + 1
+print(d[n])
