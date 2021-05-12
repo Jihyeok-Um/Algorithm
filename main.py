@@ -1,17 +1,15 @@
-testCase = int(input())
-mod = 1000000009
-max_ = 100001
-d = [[0]*4 for _ in range(max)]
-d[1][1] = d[2][2] = d[3][1] = d[3][2] = d[3][3] = 1
+n = int(input())
+mod = 1000000000
+d = [[0]*10 for i in range(n+1)]
+d[1][1] = d[1][2] = d[1][3] = d[1][4] = d[1][5] = d[1][6] = d[1][7] = d[1][8] = d[1][9] = 1
 
-for i in range(4,max):
-    d[i][1] = d[i-1][2] + d[i-1][3]
-    d[i][2] = d[i-2][1] + d[i-2][3]
-    d[i][3] = d[i-3][1] + d[i-3][2]
-    d[i][1] %= mod
-    d[i][2] %= mod
-    d[i][3] %= mod
+for i in range(2,n+1):
+    for j in range(0,10):
+        if (j != 0 and j != 9):
+            d[i][j] = d[i-1][j+1] + d[i-1][j-1]
+        elif (j == 0):
+            d[i][j] = d[i-1][j+1]
+        elif (j == 9):
+            d[i][j] = d[i-1][j-1]
 
-for i in range(testCase):
-    n = int(input())
-    print(sum(d[n])%mod)
+print(sum(d[n]) % 1000000000)
