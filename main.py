@@ -1,9 +1,8 @@
 n = int(input())
-d = [[0]*2 for i in range(n+1)]
-d[1][1] = 1
-
-for i in range(2,n+1):
-    d[i][0] = d[i-1][0] + d[i-1][1]
-    d[i][1] = d[i-1][0]
-
-print(sum(d[n]))
+d = [0 for i in range(1000001)]
+d[1] = 1
+d[2] = 2
+for i in range(3,1000001):
+    d[i] = d[i-1] + d[i-2]
+    d[i] %= 15746
+print(d[n])
