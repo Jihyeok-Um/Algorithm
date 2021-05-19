@@ -1,13 +1,12 @@
-n = int(input())
-d = [100000 for i in range(n+1)]
-d[0] = 0
-d[1] = 1
+arr = list(map(int, input().split()))
+ans = [0 for i in range(101)]
+output = []
 
-for i in range(1,n+1):
-    j = 1
-    while (j*j <= i):
-        if (d[i] > d[i-(j*j)]+1):
-            d[i] = d[i-(j*j)]+1
-        j += 1
+for i in range(len(arr)):
+    ans[arr[i]] = arr.count(arr[i])
 
-print(d[n])
+for i in range(len(ans)):
+    if (ans[i] != 0 and ans[i] != 1):
+        output.append(ans[i])
+
+print(output)
