@@ -1,16 +1,15 @@
 n = int(input())
-mod = 10007
-d = [[0 for i in range(10)] for i in range(n)]
-for i in range(0,10):
-    d[0][i] = 1
+arr = [0]
+d = [[0 for i in range(3)] for i in range(n+1)]
+for i in range(n):
+    arr.append(int(input()))
 
-for i in range(1,n):
-    for j in range(0,10):
-        k = 0
-        while(k <= j):
-            d[i][j] += d[i-1][k]
-            k += 1
-            d[i][j] %= 10007
+d[1][1] = arr[1]
+d[2][2] = arr[1]+arr[2]
 
+for i in range(3,n+1):
+    d[i][0] = max(d[i-1]) #0번
+    d[i][1] = max(d[i-2])+arr[i] #1번
+    d[i][2] = max(d[i-3])+arr[i-i]+arr[i] #2번
 
-print((sum(d[n-1])) % 10007)
+print(max(d[n]))
