@@ -1,12 +1,10 @@
 n = int(input())
-a = []
-d = [[0 for i in range(n)] for i in range(n)]
-for i in range(n):
-    a.append(list(map(int,input().split())))
-d[0][0] = a[0][0]
+d = list(map(int,input().split()))
+sum = list(d)
 
-for i in range(1,n):
-    for j in range(0,i+1):
-        d[i][j] = max(d[i-1][j-1],d[i-1][j])+a[i][j]
+for i in range(1, len(d)):
+    for j in range(0, i):
+        if(d[i] > d[j] and sum[j]+d[i] > sum[i]):
+            sum[i] = sum[j]+d[i]
 
-print(max(d[n-1]))
+print(max(sum))
