@@ -1,25 +1,15 @@
-d = [[[0 for i in range(21)] for i in range(21)] for i in range(21)]
+n = int(input())
+d = [[[0 for i in range(2)] for i in range(3)] for i in range(n+1)]
+a = [0]
+for i in range(n):
+    a.append(int(input()))
 
-def w(a,b,c):
-    if a <= 0 or b <= 0 or c <= 0:
-        return 1
-    if a > 20 or b > 20 or c > 20:
-        d[20][20][20] = w(20,20,20)
-        return d[20][20][20]
+d[1][1] = [a[1],0]
 
-    if (d[a][b][c] != 0):
-        return d[a][b][c]
+for i in range(2, n+1):
+    d[i][2][0] = max(d[i-1][1]) + a[i]
+    d[i][1][0] = max(d[i-1][0]) + a[i]
+    d[i][0][1] = max(d[i-1][2])
+    d[i][0][0] = max(d[i-1][1])
 
-    if a < b and b < c:
-        d[a][b][c] = w(a,b,c-1) + w(a,b-1,c-1) - w(a,b-1,c)
-        return d[a][b][c]
-
-    d[a][b][c] = w(a-1,b,c) + w(a-1, b-1, c) + w(a-1, b ,c-1) - w(a-1, b-1, c-1)
-    return d[a][b][c]
-
-while(True):
-    a,b,c = map(int,input().split())
-    if(a == -1 and b == -1 and c == -1):
-        break
-    else:
-        print(f'w{a,b,c} = {w(a,b,c)}')
+print(max(max(d[n][1]),max(d[n][2])))
