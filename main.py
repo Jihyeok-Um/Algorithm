@@ -1,11 +1,28 @@
-n = int(input())
-d = [0 for i in range(n+1)]
-d[0] = 1
+import sys
+sys.setrecursionlimit(100000)
+d = [0 for i in range(10001)]
+n = [[0,0] for i in range(41)]
+n[0] = [1,0]
+n[1] = [0,1]
 
-if (n >= 2):
-    for i in range(2,n+1):
-        d[i] = d[i-2]*3
-        for j in range(i-4,-2,-2):
-            d[i] += d[j]*2
+def fibonaci(num):
+    if (num == 0):
+        return 0
+    if (num == 1):
+        d[num] = 1
+        return d[num]
+    if (d[num] != 0):
+        return d[num]
+    else:
+        d[num] = fibonaci(num-1) + fibonaci(num-2)
+        for i in range(0,2):
+            n[num][i] = n[num-1][i] + n[num-2][i]
+        return d[num]
 
-print(d[n])
+t = int(input())
+fibonaci(40)
+
+for i in range(t):
+    num = int(input())
+    for j in range(0,2):
+        print(n[num][j], end=' ')
