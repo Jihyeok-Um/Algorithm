@@ -1,28 +1,16 @@
-import sys
-sys.setrecursionlimit(100000)
-d = [0 for i in range(10001)]
-n = [[0,0] for i in range(41)]
-n[0] = [1,0]
-n[1] = [0,1]
+def w(a,b,c):
+    if a <= 0 or b <= 0 or c <= 0:
+        return 1
+    if a > 20 or b > 20 or c > 20:
+        return w(20,20,20)
+    if a < b and b < c:
+        return w(a,b,c-1) + w(a,b-1,c-1) - w(a,b-1,c)
 
-def fibonaci(num):
-    if (num == 0):
-        return 0
-    if (num == 1):
-        d[num] = 1
-        return d[num]
-    if (d[num] != 0):
-        return d[num]
+    return w(a-1,b,c) + w(a-1, b-1, c) + w(a-1, b ,c-1) - w(a-1, b-1, c-1)
+
+while(True):
+    a,b,c = map(int,input().split())
+    if(a == -1 and b == -1 and c == -1):
+        break
     else:
-        d[num] = fibonaci(num-1) + fibonaci(num-2)
-        for i in range(0,2):
-            n[num][i] = n[num-1][i] + n[num-2][i]
-        return d[num]
-
-t = int(input())
-fibonaci(40)
-
-for i in range(t):
-    num = int(input())
-    for j in range(0,2):
-        print(n[num][j], end=' ')
+        print(f'w{a,b,c} = {w(a,b,c)}')
