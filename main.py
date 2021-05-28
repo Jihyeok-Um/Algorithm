@@ -1,15 +1,58 @@
+import sys
+input = sys.stdin.readline
+queue = [0 for i in range(10000)]
+start = 0
+end = 0
+
+def push(num):
+    global end
+    queue[end] = int(num)
+    end += 1
+
+def pop():
+    global start
+    if(queue[start] == 0):
+        print(-1)
+    else:
+        print(queue[start])
+        queue[start] = 0
+        start += 1
+
+def size():
+    print(end - start)
+
+def empty():
+    if(start == end):
+        print(1)
+    else:
+        print(0)
+
+def front():
+    if(start == end):
+        print(-1)
+    else:
+        print(queue[start])
+
+def back():
+    if(start == end):
+        print(-1)
+    else:
+        print(queue[end-1])
+
 n = int(input())
-d = [[[0 for i in range(2)] for i in range(3)] for i in range(n+1)]
-a = [0]
+
 for i in range(n):
-    a.append(int(input()))
-
-d[1][1] = [a[1],0]
-
-for i in range(2, n+1):
-    d[i][2][0] = max(d[i-1][1]) + a[i]
-    d[i][1][0] = max(d[i-1][0]) + a[i]
-    d[i][0][1] = max(d[i-1][2])
-    d[i][0][0] = max(d[i-1][1])
-
-print(max(max(d[n][1]),max(d[n][2])))
+    d = list(map(str,input().split()))
+    if(d[0] == 'push'):
+        push(d[1])
+    elif(d[0] == 'pop'):
+        pop()
+    elif(d[0] == 'size'):
+        size()
+    elif(d[0] == 'empty'):
+        empty()
+    elif(d[0] == 'front'):
+        front()
+    elif(d[0] == 'back'):
+        back()
+    d = []
