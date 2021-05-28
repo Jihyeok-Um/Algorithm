@@ -1,6 +1,7 @@
 import sys
 input = sys.stdin.readline
-queue = [0 for i in range(10000)]
+n = int(input())
+queue = [0 for i in range(n)]
 start = 0
 end = 0
 
@@ -38,8 +39,6 @@ def back():
         print(-1)
     else:
         print(queue[end-1])
-
-n = int(input())
 
 for i in range(n):
     d = list(map(str,input().split()))
