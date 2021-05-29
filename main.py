@@ -9,4 +9,4 @@ for i in range(0, n+1):
         elif (j != 0 and j != i):
             d[i][j] = d[i-1][j-1] + d[i-1][j]
 
-print(d[n][k] % 10007)
+print(d[n-1][k-1])
