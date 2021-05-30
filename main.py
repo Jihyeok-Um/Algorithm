@@ -1,12 +1,30 @@
-n, k = map(int, input().split())
-d = [[0 for i in range(n+1)] for i in range(n+1)]
-for i in range(0, n+1):
-    for j in range(0, i + 1):
-        if (j == 0):
-            d[i][j] = 1
-        elif (j == i):
-            d[i][j] = 1
-        elif (j != 0 and j != i):
-            d[i][j] = d[i-1][j-1] + d[i-1][j]
+node,edge,vertex = map(int, input().split())
+matrix = [[0]*node for i in range(node)]
+for i in range(edge):
+    a,b = map(int, input().split())
+    matrix[a-1][b-1] = matrix[b-1][a-1] = 1
+visitList = [0] * (node)
 
-print(d[n-1][k-1])
+def dfs(vertex):
+    visitList[vertex]=1
+    print(vertex+1, end=' ')
+    for i in range(0, node):
+        if(visitList[i]==0 and matrix[vertex][i]==1):
+            dfs(i)
+
+
+def bfs(vertex):
+    queue=[vertex]
+    visitList[vertex]=1
+    while queue:
+        vertex=queue.pop(0)
+        print(vertex+1, end=' ')
+        for i in range(0, node):
+            if(visitList[i]==0 and matrix[vertex][i]==1):
+                queue.append(i)
+                visitList[i]=1
+
+dfs(vertex - 1)
+visitList = [0] * (node+1)
+print()
+bfs(vertex - 1)
