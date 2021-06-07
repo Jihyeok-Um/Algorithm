@@ -1,31 +1,58 @@
-from collections import deque
-n,m = map(int,input().split())
-matrix = [list(map(int,list(input()))) for i in range(m)]
-check = [[-1 for i in range(n)] for i in range(m)]
-dx = [1,0,-1,0]
-dy = [0,-1,0,1]
-q = deque()
-q2 = deque()
-q.append([0,0])
-check[0][0] = 0
-while(q or q2):
-    if (q):
-        a = 1 #의미없음
-    elif (q2):
-        q = deque(q2)
-        q2.clear()
-    t = q.popleft()
-    for i in range(4):
-        x = t[0] + dx[i]
-        y = t[1] + dy[i]
-        if (x>=0 and x<n and y>=0 and y<m and matrix[y][x] == 1 and check[y][x] == -1):
-            check[y][x] = check[t[1]][t[0]] + 1
-            q2.append([x,y])
-        if (x>=0 and x<n and y>=0 and y<m and matrix[y][x] == 0 and check[y][x] == -1):
-            check[y][x] = check[t[1]][t[0]]
-            q.append([x,y])
+n,m,r = map(int,input().split())
+matrix = [list(map(int,input().split())) for i in range(n)]
+matrix2 = [[0 for i in range(m)] for i in range(n)]
+a = []
+a = map(int,input().split())
 
-for i in range(m):
-    print(check[i])
+for i in a:
+    if (i == 1):
+        for y in range(n):
+            for x in range(m):
+                matrix2[n-y-1][x] = matrix[y][x]
+    elif (i == 2):
+        for y in range(n):
+            for x in range(m):
+                matrix2[y][m-x-1] = matrix[y][x]
+    elif (i == 3):
+        matrix2 = [[0 for i in range(n)] for i in range(m)]
+        n,m = m,n
+        for y in range(n):
+            for x in range(m):
+                matrix2[y][x] = matrix[m-x-1][y]
+    elif (i == 4):
+        matrix2 = [[0 for i in range(n)] for i in range(m)]
+        n,m = m,n
+        for y in range(n):
+            for x in range(m):
+                matrix2[y][x] = matrix[x][n-y-1]
+    elif (i == 5):
+        for y in range(n):
+            for x in range(m):
+                if (y < int(n/2) and x < int(m/2)): # 1사분면
+                    matrix2[y][x+int(m/2)] = matrix[y][x]
+                elif (y < int(n/2) and x >= int(m/2)): # 2사분면
+                    matrix2[y+int(n/2)][x] = matrix[y][x]
+                elif (y >= int(n/2) and x < int(m/2)): # 4사분면
+                    matrix2[y-int(n/2)][x] = matrix[y][x]
+                elif (y >= int(n/2) and x >= int(m/2)): # 3사분면
+                    matrix2[y][x-int(m/2)] = matrix[y][x]
+    elif (i == 6):
+        for y in range(n):
+            for x in range(m):
+                if (y < int(n/2) and x < int(m/2)): # 1사분면
+                    matrix2[y+int(n/2)][x] = matrix[y][x]
+                elif (y < int(n/2) and x >= int(m/2)): # 2사분면
+                    matrix2[y][x-int(m/2)] = matrix[y][x]
+                elif (y >= int(n/2) and x < int(m/2)): # 4사분면
+                    matrix2[y][x+int(m/2)] = matrix[y][x]
+                elif (y >= n/2 and x >= m/2): # 3사분면
+                    matrix2[y-int(n/2)][x] = matrix[y][x]
 
-print(check[m-1][n-1])
+    matrix = []
+    for y in range(len(matrix2)):
+        matrix.append(list(matrix2[y]))
+
+for y in range(len(matrix2)):
+    for x in range(len(matrix2[0])):
+        print(matrix2[y][x],end=' ')
+    print()
