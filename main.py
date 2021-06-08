@@ -1,15 +1,26 @@
-def solution(n):
-    prime_store = [0 for i in range(1000000)]
-    prime_num = 0
-    array = [False for i in range(1000000)]
+from collections import deque
 
-    for i in range(2,n+1):
-        if array[i] == False:
-            prime_store[prime_num] = i
-            prime_num += 1
-        j = i*i
-        while(j <= n):
-            array[j] = True
-            j += i
+def solution(n, edge):
+    q = deque()
+    matrix = [[] for i in range(n + 1)]
+    check = [-1 for i in range(n + 1)]
+    for i in range(len(edge)):
+        matrix[edge[i][0]].append(edge[i][1])
+        matrix[edge[i][1]].append(edge[i][0])
 
-    return prime_num
+    q.append(1)
+    check[1] = 0
+    while (q):
+        vertex = q.popleft()
+        for j in range(0,len(matrix[vertex])):
+            if (check[matrix[vertex][j]] == -1):
+                check[matrix[vertex][j]] = check[vertex]+1
+                q.append(matrix[vertex][j])
+
+    temp = max(check)
+    ans = 0
+    for i in range(len(check)):
+        if (check[i] == temp):
+            ans += 1
+
+    return ans
