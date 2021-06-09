@@ -1,11 +1,13 @@
-def solution(n, results):
-    matrix = [[] for i in range(n + 1)]
-    for i in range(n + 1):
-        for j in range(len(result)):
-            matrix[result[i][0]].append(result[i][1])
+def solution(n):
+    count = 10
+    answer = 0
+    while(int(n / count) != 0):
+        count *= 10
+    count /= 10
 
-    cmt = [0 for i in range(n + 1)]
-    for i in range(n + 1):
-        cmt[i] += len(matrix[i])
-        for j in range(len(matrix[i]):
-            cmt[matrix[i][j]] -= 1
+    while(count != 0):
+        answer += int(n / count)
+        n = int(n % count)
+        count = int(count / 10)
+
+    return answer
