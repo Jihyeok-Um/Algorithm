@@ -1,13 +1,9 @@
-def solution(n):
-    count = 10
+def solution(d, budget):
     answer = 0
-    while(int(n / count) != 0):
-        count *= 10
-    count /= 10
-
-    while(count != 0):
-        answer += int(n / count)
-        n = int(n % count)
-        count = int(count / 10)
+    d.sort()
+    for i in d:
+        if (budget >= i):
+            budget -= i
+            answer += 1
 
     return answer
