@@ -1,18 +1,19 @@
-def solution(x):
-    count = 10
-    a = x
-    sum_ = 0
-    while (int(x / count) != 0):
-        count *= 10
-    count /= 10
+a = 0
 
-    while (count != 1):
-        sum_ += int(x / count)
-        x = int(x % count)
-        count /= 10
-    sum_ += x
+def solution(num):
+    collatz(num, 0)
+    return a
 
-    if (a % sum_ == 0):
-        return True
-    else:
-        return False
+def collatz(num, count):
+    global a
+    if (count == 500):
+        a = -1
+        return -1
+    if (num == 1):
+        a = count
+        return
+
+    if (num % 2 == 0):
+        collatz(num // 2, count + 1)
+    elif (num % 2 == 1):
+        collatz(num * 3 + 1, count + 1)
