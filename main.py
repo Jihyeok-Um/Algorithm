@@ -1,18 +1,23 @@
 def solution(s):
-    lenCheck = False
-    numCheck = False
-    num = 0
-    if (len(s) == 4 or len(s) == 6):
-        lenCheck = True
-
+    answer = 0
+    count = 1
+    isNeg = False
     for i in range(len(s)):
-        for j in range(10):
-            if (ord(s[i]) == ord("0") + j):
-                num += 1
-
-    if (num == len(s)):
-        numCheck = True
-    if (numCheck == True and lenCheck == True):
-        return True
+        count *= 10
+    count = count // 10
+    if (s[0] == '+' or s[0] == '-'):
+        count = count // 10
+        if (s[0] == '-'):
+            isNeg = True
+        for i in range(1, len(s)):
+            answer += count * int(s[i])
+            count = count // 10
     else:
-        return False
+        for i in range(0, len(s)):
+            answer += count * int(s[i])
+            count = count // 10
+
+    if (isNeg == True):
+        answer = -answer
+
+    return answer
