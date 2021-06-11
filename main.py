@@ -1,6 +1,9 @@
-def solution(arr):
-    answer = 0
-    for i in arr:
-        answer += i
+def solution(n, m):
+    a = [n, m]
+    while m != 0:
+        remainder = n % m
+        n = m
+        m = remainder
 
-    return answer / len(arr)
+    num = [n, int((a[0] * a[1]) / n)]
+    return num
