@@ -1,9 +1,11 @@
-def solution(n, m):
-    a = [n, m]
-    while m != 0:
-        remainder = n % m
-        n = m
-        m = remainder
+def solution(arr):
+    if (len(arr) == 1):
+        num2 = [-1]
+        return num2
+    else:
+        arr.remove(min(arr))
 
-    num = [n, int((a[0] * a[1]) / n)]
-    return num
+    if (len(arr) == 0):
+        num2 = [-1]
+        return num2
+    return arr
