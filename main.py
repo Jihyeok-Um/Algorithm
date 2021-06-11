@@ -1,7 +1,18 @@
-def solution(arr1, arr2):
-    answer = [[0 for i in range(len(arr1[0]))] for i in range(len(arr1))]
-    for i in range(len(arr1)):
-        for j in range(len(arr1[i])):
-            answer[i][j] = arr1[i][j] + arr2[i][j]
+def solution(x):
+    count = 10
+    a = x
+    sum_ = 0
+    while (int(x / count) != 0):
+        count *= 10
+    count /= 10
 
-    return answer
+    while (count != 1):
+        sum_ += int(x / count)
+        x = int(x % count)
+        count /= 10
+    sum_ += x
+
+    if (a % sum_ == 0):
+        return True
+    else:
+        return False
