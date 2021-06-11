@@ -1,23 +1,13 @@
 def solution(s):
-    answer = 0
-    count = 1
-    isNeg = False
+    countP = 0
+    countY = 0
+
     for i in range(len(s)):
-        count *= 10
-    count = count // 10
-    if (s[0] == '+' or s[0] == '-'):
-        count = count // 10
-        if (s[0] == '-'):
-            isNeg = True
-        for i in range(1, len(s)):
-            answer += count * int(s[i])
-            count = count // 10
+        if (s[i] == "p" or s[i] == "P"):
+            countP += 1
+        elif (s[i] == "y" or s[i] == "Y"):
+            countY += 1
+    if (countP == countY):
+        return True
     else:
-        for i in range(0, len(s)):
-            answer += count * int(s[i])
-            count = count // 10
-
-    if (isNeg == True):
-        answer = -answer
-
-    return answer
+        return False
