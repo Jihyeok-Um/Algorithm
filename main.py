@@ -1,10 +1,6 @@
-# 자연수 뒤집어 배열로 만들기
+# 서울에서 김서방 찾기
 
-def solution(n):
-    a = str(n)
-    result = []
-    for i in a:
-        result.append(int(i))
-
-    result.reverse()
-    return result
+def solution(seoul):
+    a = seoul.index("Kim")
+    answer = f"김서방은 {a}에 있다"
+    return answer
