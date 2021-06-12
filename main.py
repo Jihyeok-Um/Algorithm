@@ -1,10 +1,11 @@
-# 자연수 뒤집어 배열로 만들기
+# 정수 제곱근 판별
+
+import math
 
 def solution(n):
-    a = str(n)
-    result = []
-    for i in a:
-        result.append(int(i))
+    num = math.sqrt(float(n))
+    if (num == int(num)):
+        return (num + 1) * (num + 1)
+    else:
+        return -1
 
-    result.reverse()
-    return result
