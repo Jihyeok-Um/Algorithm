@@ -1,10 +1,7 @@
-def solution(nums):
-    get = []
-    for i in range(len(nums)):
-        if (len(get) == len(nums) / 2):
-            return len(get)
-
-        if (nums[i] not in get):
-            get.append(nums[i])
-
-    return len(get)
+def solution(array, commands):
+    result = []
+    for i in range(len(commands)):
+        temp = array[commands[i][0]-1:commands[i][1]]
+        temp.sort()
+        result.append(temp[commands[i][2]-1])
+    return result
