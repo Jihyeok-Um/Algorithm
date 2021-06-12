@@ -1,12 +1,9 @@
-def solution(d, budget):
-    d.sort()
-    result = 0
-    i = 0
-    for i in range(len(d)):
-        if (d[i] <= budget):
-            result += 1
-            budget -= d[i]
+def solution(absolutes, signs):
+    sum = 0
+    for i in range(len(signs)):
+        if (signs[i] == True):
+            sum += absolutes[i]
         else:
-            break
+            sum -= absolutes[i]
 
-    return result
+    return sum
