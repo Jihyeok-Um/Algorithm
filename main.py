@@ -1,28 +1,11 @@
-def solution(n, arr1, arr2):
-    result = []
-    for i in range(len(arr1)):
-        a1 = []
-        a2 = []
-        while (arr1[i] != 0):
-            a1.append(arr1[i] % 2)
-            arr1[i] = arr1[i] // 2
-        while (arr2[i] != 0):
-            a2.append(arr2[i] % 2)
-            arr2[i] = arr2[i] // 2
+# 두 개 뽑아서 더하기
 
-        while (len(a1) < len(arr1)):
-            a1.append(0)
-        while (len(a2) < len(arr2)):
-            a2.append(0)
+def solution(nums):
+    get = []
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if ((nums[i] + nums[j]) not in get):
+                get.append(nums[i] + nums[j])
 
-        a1.reverse()
-        a2.reverse()
-        temp = ""
-        for j in range(len(a1)):
-            if (a1[j] == 1 or a2[j] == 1):
-                temp += '#'
-            else:
-                temp += ' '
-        result.append(temp)
-
-    return result
+    get.sort()
+    return get
