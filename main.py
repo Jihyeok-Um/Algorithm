@@ -1,26 +1,91 @@
-from itertools import combinations
+def solution(numbers, hand):
+    matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 0, 12]]
+    left = [3, 0]
+    right = [3, 2]
+    answer = ''
 
-array = [False for i in range(10001)]
+    for i in range(len(numbers)):
+        if (numbers[i] == 1):
+            answer += "L"
+            left = [0, 0]
+        elif (numbers[i] == 4):
+            answer += "L"
+            left = [1, 0]
+        elif (numbers[i] == 7):
+            answer += "L"
+            left = [2, 0]
+        elif (numbers[i] == 3):
+            answer += "R"
+            right = [0, 2]
+        elif (numbers[i] == 6):
+            answer += "R"
+            right = [1, 2]
+        elif (numbers[i] == 9):
+            answer += "R"
+            right = [2, 2]
+        elif (numbers[i] == 2):
+            ld = abs(left[0] - 0) + abs(left[1] - 1)
+            rd = abs(right[0] - 0) + abs(right[1] - 1)
+            if (ld < rd):
+                answer += "L"
+                left = [0, 1]
+            elif (ld > rd):
+                answer += "R"
+                right = [0, 1]
+            else:
+                if (hand == "right"):
+                    answer += "R"
+                    right = [0, 1]
+                else:
+                    answer += "L"
+                    left = [0, 1]
+        elif (numbers[i] == 5):
+            ld = abs(left[0] - 1) + abs(left[1] - 1)
+            rd = abs(right[0] - 1) + abs(right[1] - 1)
+            if (ld < rd):
+                answer += "L"
+                left = [1, 1]
+            elif (ld > rd):
+                answer += "R"
+                right = [1, 1]
+            else:
+                if (hand == "right"):
+                    answer += "R"
+                    right = [1, 1]
+                else:
+                    answer += "L"
+                    left = [1, 1]
+        elif (numbers[i] == 8):
+            ld = abs(left[0] - 2) + abs(left[1] - 1)
+            rd = abs(right[0] - 2) + abs(right[1] - 1)
+            if (ld < rd):
+                answer += "L"
+                left = [2, 1]
+            elif (ld > rd):
+                answer += "R"
+                right = [2, 1]
+            else:
+                if (hand == "right"):
+                    answer += "R"
+                    right = [2, 1]
+                else:
+                    answer += "L"
+                    left = [2, 1]
+        elif (numbers[i] == 0):
+            ld = abs(left[0] - 3) + abs(left[1] - 1)
+            rd = abs(right[0] - 3) + abs(right[1] - 1)
+            if (ld < rd):
+                answer += "L"
+                left = [3, 1]
+            elif (ld > rd):
+                answer += "R"
+                right = [3, 1]
+            else:
+                if (hand == "right"):
+                    answer += "R"
+                    right = [3, 1]
+                else:
+                    answer += "L"
+                    left = [3, 1]
 
-
-def solution(nums):
-    get_prime(1, 10000)
-    store = list(combinations(nums, 3))
-    for i in range(len(store)):
-        store[i] = store[i][0] + store[i][1] + store[i][2]
-
-    count = 0
-    for i in range(len(store)):
-        if (array[store[i]] == False):
-            count += 1
-
-    return count
-
-
-def get_prime(min, max):
-    for i in range(2, max + 1):
-        if (array[i] == False):
-            j = i * i
-        while (j <= max):
-            array[j] = True
-            j += i
+    return answer
