@@ -1,14 +1,26 @@
-# 약수의 개수와 덧셈
-def solution(left, right):
-    answer = 0
-    for i in range(left, right + 1):
-        count = 0
-        for j in range(1, i + 1):
-            if (i % j == 0):
-                count += 1
-        if (count % 2 == 0):
-            answer += i
-        else:
-            answer -= i
+from itertools import combinations
 
-    return answer
+array = [False for i in range(10001)]
+
+
+def solution(nums):
+    get_prime(1, 10000)
+    store = list(combinations(nums, 3))
+    for i in range(len(store)):
+        store[i] = store[i][0] + store[i][1] + store[i][2]
+
+    count = 0
+    for i in range(len(store)):
+        if (array[store[i]] == False):
+            count += 1
+
+    return count
+
+
+def get_prime(min, max):
+    for i in range(2, max + 1):
+        if (array[i] == False):
+            j = i * i
+        while (j <= max):
+            array[j] = True
+            j += i
