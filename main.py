@@ -1,13 +1,14 @@
-def solution(n):
-    one = getOne(n)
-    while(True):
-        n += 1
-        if(one == getOne(n)):
-            return n
+def solution(brown, yellow):
+    garoYellow = yellow
+    seroYellow = 1
+    while (garoYellow >= seroYellow):
+        if (yellow == garoYellow * seroYellow):
+            garoBrown = garoYellow
+            seroBrown = seroYellow + 2
+            if (brown == (garoBrown * 2) + (seroBrown * 2)):
+                return [garoBrown + 2, seroBrown]
 
-def getOne(n):
-    arr = []
-    while(n > 0):
-        arr.append(n % 2)
-        n = n // 2
-    return arr.count(1)
+        if (yellow > garoYellow * seroYellow):
+            seroYellow += 1
+            garoYellow += 1
+        garoYellow -= 1
