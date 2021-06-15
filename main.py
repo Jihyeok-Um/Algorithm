@@ -1,16 +1,31 @@
-def solution(record):
-    ans = []
-    uid = {}
-    for i in range(len(record)):
-        arr = record[i].split(" ")
-        if (arr[0] != "Leave"):
-            uid[arr[1]] = arr[len(arr) - 1]
+from itertools import permutations
 
-    for i in range(len(record)):
-        arr = record[i].split(" ")
-        if (arr[0] == "Enter"):
-            ans.append(f"{uid[arr[1]]}님이 들어왔습니다.")
-        elif (arr[0] == "Leave"):
-            ans.append(f"{uid[arr[1]]}님이 나갔습니다.")
+prime = [False for i in range(10000001)]
 
-    return ans
+
+def isPrime():
+    prime[0] = prime[1] = True
+    for i in range(2, 10000000):
+        if (prime[i] == False):
+            j = i * i
+            while (j <= 10000000):
+                prime[j] = True
+                j += i
+
+
+def solution(numbers):
+    isPrime()
+    count = 0
+    primeStore = []
+    for i in range(len(numbers)):
+        num = list(permutations(numbers, i + 1))
+        for j in range(len(num)):
+            temp = ""
+            for k in range(len(num[j])):
+                temp += num[j][k]
+            if (prime[int(temp)] == False and int(temp) not in primeStore):
+                primeStore.append(int(temp))
+                count += 1
+
+    return count
+
