@@ -1,14 +1,16 @@
-def solution(brown, yellow):
-    garoYellow = yellow
-    seroYellow = 1
-    while (garoYellow >= seroYellow):
-        if (yellow == garoYellow * seroYellow):
-            garoBrown = garoYellow
-            seroBrown = seroYellow + 2
-            if (brown == (garoBrown * 2) + (seroBrown * 2)):
-                return [garoBrown + 2, seroBrown]
+def solution(record):
+    ans = []
+    uid = {}
+    for i in range(len(record)):
+        arr = record[i].split(" ")
+        if (arr[0] != "Leave"):
+            uid[arr[1]] = arr[len(arr) - 1]
 
-        if (yellow > garoYellow * seroYellow):
-            seroYellow += 1
-            garoYellow += 1
-        garoYellow -= 1
+    for i in range(len(record)):
+        arr = record[i].split(" ")
+        if (arr[0] == "Enter"):
+            ans.append(f"{uid[arr[1]]}님이 들어왔습니다.")
+        elif (arr[0] == "Leave"):
+            ans.append(f"{uid[arr[1]]}님이 나갔습니다.")
+
+    return ans
