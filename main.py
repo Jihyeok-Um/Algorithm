@@ -1,23 +1,18 @@
 def solution(s):
-    isFirst = True
-    s = s.lower()
+    srr = ""
     arr = []
     for i in range(len(s)):
-        arr.append(s[i])
-    for i in range(len(s)):
-        if (isFirst == True):
-            if (s[i] == " "):
-                continue
-            isFirst = False
-            for j in range(26):
-                if (ord(s[i]) == ord('a') + j):
-                    arr[i] = chr(ord('A') + j)
-        else:
-            if (s[i] == " "):
-                isFirst = True
+        if (s[i] != " "):
+            srr += s[i]
+        elif (s[i] == " "):
+            arr.append(srr)
+            srr = ""
+    arr.append(srr)
+    for i in range(len(arr)):
+        arr[i] = int(arr[i])
 
     ans = ""
-    for i in range(len(arr)):
-        ans += arr[i]
-
+    ans += str(min(arr))
+    ans += " "
+    ans += str(max(arr))
     return ans
