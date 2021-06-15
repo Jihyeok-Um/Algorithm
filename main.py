@@ -1,15 +1,23 @@
-import sys
-sys.setrecursionlimit(1000000)
-
-f = [-1 for i in range(1000000)]
-def solution(n):
-    if(n == 0):
-        return 0
-    elif(n == 1):
-        return 1
-    else:
-        if (f[n] != -1):
-            return f[n] % 1234567
+def solution(s):
+    isFirst = True
+    s = s.lower()
+    arr = []
+    for i in range(len(s)):
+        arr.append(s[i])
+    for i in range(len(s)):
+        if (isFirst == True):
+            if (s[i] == " "):
+                continue
+            isFirst = False
+            for j in range(26):
+                if (ord(s[i]) == ord('a') + j):
+                    arr[i] = chr(ord('A') + j)
         else:
-            f[n] = solution(n-1)+solution(n-2)
-            return f[n] % 1234567
+            if (s[i] == " "):
+                isFirst = True
+
+    ans = ""
+    for i in range(len(arr)):
+        ans += arr[i]
+
+    return ans
