@@ -1,33 +1,21 @@
-class Node:
-    def __init__(self, item):
-        self.data = item
-        self.next = None
+def popAt(self, pos):
+    if pos < 1 or pos > self.nodeCount:
+        raise IndexError
 
+    prev = self.getAt(pos - 1)
+    curr = self.getAt(pos)
 
-class LinkedList:
-    def __init__(self):
-        self.nodeCount = 0
+    if self.nodeCount == 1:
         self.head = None
         self.tail = None
+    else:
+        if pos == 1:
+            self.head = curr.next
+        elif pos == self.nodeCount:
+            self.tail = prev
+            prev.next = None
+        else:
+            prev.next = curr.next
 
-    def getAt(self, pos):
-        if pos < 1 or pos > self.nodeCount:
-            return None
-        i = 1
-        curr = self.head
-        while i < pos:
-            curr = curr.next
-        return curr
-
-    def traverse(self):
-        ans = []
-        curr = self.head
-        while curr != None:
-            ans.append(curr.data)
-            curr = curr.next
-        return ans
-
-
-# 이 solution 함수는 그대로 두어야 합니다.
-def solution(x):
-    return 0
+    self.nodeCount -= 1
+    return curr.data
