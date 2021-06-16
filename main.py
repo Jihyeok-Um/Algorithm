@@ -1,13 +1,33 @@
-def solution(L, x):
-    start = 0
-    last = len(L) - 1
+class Node:
+    def __init__(self, item):
+        self.data = item
+        self.next = None
 
-    while (start <= last):
-        mid = (start + last) // 2
-        if (L[mid] > x):
-            last = mid - 1
-        elif (L[mid] < x):
-            start = mid + 1
-        elif (L[mid] == x):
-            return mid
-    return -1
+
+class LinkedList:
+    def __init__(self):
+        self.nodeCount = 0
+        self.head = None
+        self.tail = None
+
+    def getAt(self, pos):
+        if pos < 1 or pos > self.nodeCount:
+            return None
+        i = 1
+        curr = self.head
+        while i < pos:
+            curr = curr.next
+        return curr
+
+    def traverse(self):
+        ans = []
+        curr = self.head
+        while curr != None:
+            ans.append(curr.data)
+            curr = curr.next
+        return ans
+
+
+# 이 solution 함수는 그대로 두어야 합니다.
+def solution(x):
+    return 0
