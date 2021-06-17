@@ -1,48 +1,24 @@
-class ArrayStack:
-
-    def __init__(self):
-        self.data = []
-
-    def size(self):
-        return len(self.data)
-
-    def isEmpty(self):
-        return self.size() == 0
-
-    def push(self, item):
-        self.data.append(item)
-
-    def pop(self):
-        return self.data.pop()
-
-    def peek(self):
-        return self.data[-1]
-
-
-prec = {
-    '*': 3, '/': 3,
-    '+': 2, '-': 2,
-    '(': 1
-}
-
-
-def solution(S):
-    opStack = ArrayStack()
-    ans = ""
-    for i in range(len(S)):
-        if (S[i] in prec):
-            if (S[i] != '('):
-                while (not opStack.isEmpty() and prec[opStack.peek()] >= prec[S[i]]):
-                    ans += opStack.pop()
-            opStack.push(S[i])
-        elif (S[i] == ')'):
-            while (prec[opStack.peek()] != 1):
-                ans += opStack.pop()
-            opStack.pop()
+def postfixEval(tokenList):
+    prec = {
+        '*': 1,
+        '/': 2,
+        '+': 3,
+        '-': 4,
+    }
+    pStack = ArrayStack()
+    for i in range(len(tokenList)):
+        if (tokenList[i] in prec):
+            a = pStack.pop()
+            b = pStack.pop()
+            if (tokenList[i] == '*'):
+                pStack.push(a * b)
+            elif (tokenList[i] == '/'):
+                pStack.push(b / a)
+            elif (tokenList[i] == '+'):
+                pStack.push(a + b)
+            else:
+                pStack.push(b - a)
         else:
-            ans += S[i]
+            pStack.push(tokenList[i])
 
-    while (not opStack.isEmpty()):
-        ans += opStack.pop()
-
-    return ans
+    return pStack.pop()
