@@ -1,21 +1,8 @@
-def popAfter(self, prev):
-    curr = prev.next
-    if (curr.next is None):
-        if (self.nodeCount == 1):
-            self.tail = None
-            prev.next = None
-        else:
-            self.tail = prev
-            prev.next = None
-    else:
-        prev.next = curr.next
+def reverse(self):
+    ans = []
+    curr = self.tail
+    while (curr.prev.prev):
+        curr = curr.prev
+        ans.append(curr.data)
 
-    self.nodeCount -= 1
-    return curr.data
-
-
-def popAt(self, pos):
-    if pos < 1 or pos > self.nodeCount:
-        raise IndexError
-    prev = self.getAt(pos - 1)
-    return self.popAfter(prev)
+    return ans
