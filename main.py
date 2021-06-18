@@ -1,25 +1,27 @@
 from collections import deque
 
-def solution(progresses, speeds):
+
+def solution(priorities, location):
     q = deque()
-    speed = deque()
-    for i in range(len(progresses)):
-        q.append(progresses[i])
-        speed.append(speeds[i])
+    for i in priorities:
+        q.append(i)
 
-    ans = []
+    count = 0
+    location += 1
     while (q):
-        for i in range(len(q)):
-            q[i] += speed[i]
+        temp = q.popleft()
+        if (location > 0):
+            location -= 1
 
-        count = 0
-        while (q):
-            if (q[0] >= 100):
-                q.popleft()
-                speed.popleft()
-                count += 1
-            else:
-                break
-        if (count != 0):
-            ans.append(count)
-    return ans
+        if (len(q) >= 1 and temp >= max(q)):
+            count += 1
+            if (location == 0):
+                return count
+        elif (len(q) == 0):
+            count += 1
+            if (location == 0):
+                return count
+        else:
+            q.append(temp)
+            if (location == 0):
+                location = len(q)
