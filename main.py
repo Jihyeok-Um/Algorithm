@@ -1,13 +1,7 @@
-def solution(participant, completion):
-    participant.sort()
-    completion.sort()
-    result = ""
-    for i in range(len(completion)):
-        if (completion[i] != participant[i]):
-            result = participant[i]
-            break
+def solution(phone_book):
+    phone_book.sort()
+    for i in range(len(phone_book) - 1):
+        if (phone_book[i] == phone_book[i + 1][0:len(phone_book[i])]):
+            return False
 
-    if (result == ""):
-        return participant[len(participant) - 1]
-    else:
-        return result
+    return True
