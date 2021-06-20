@@ -1,7 +1,18 @@
-def solution(phone_book):
-    phone_book.sort()
-    for i in range(len(phone_book) - 1):
-        if (phone_book[i] == phone_book[i + 1][0:len(phone_book[i])]):
-            return False
+def solution(clothes):
+    for i in range(len(clothes)):
+        clothes[i][0], clothes[i][1] = clothes[i][1], clothes[i][0]
+    clothes.sort()
+    temp = []
+    ans = {}
+    for i in range(len(clothes)):
+        if (clothes[i][0] not in temp):
+            temp.append(clothes[i][0])
+            ans[clothes[i][0]] = 1
+        else:
+            ans[clothes[i][0]] = ans[clothes[i][0]] + 1
 
-    return True
+    answer = 1
+    for i in range(len(ans)):
+        answer *= (ans.get(temp[i]) + 1)
+
+    return answer - 1
