@@ -1,19 +1,18 @@
-class MaxHeap:
+import heapq
 
-    def __init__(self):
-        self.data = [None]
+def solution(scoville, K):
+    heap = []
+    for i in scoville:
+        heapq.heappush(heap, i)
 
+    count = 0
+    while (heap[0] < K and len(heap) >= 2):
+        a = heapq.heappop(heap)
+        b = heapq.heappop(heap)
+        result = a + b * 2
+        heapq.heappush(heap, result)
+        count += 1
 
-    def insert(self, item):
-        self.data.append(item)
-        i = len(self.data) - 1
-        while i != 1:
-            if self.data[i] > self.data[(i // 2)]:
-                self.data[i], self.data[(i // 2)] = self.data[(i // 2)], self.data[i]
-                i = i // 2
-            else:
-                break
-
-
-def solution(x):
-    return 0
+    if (heap[0] < K):
+        return -1
+    return count 
