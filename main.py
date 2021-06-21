@@ -1,18 +1,19 @@
-def solution(clothes):
-    for i in range(len(clothes)):
-        clothes[i][0], clothes[i][1] = clothes[i][1], clothes[i][0]
-    clothes.sort()
-    temp = []
-    ans = {}
-    for i in range(len(clothes)):
-        if (clothes[i][0] not in temp):
-            temp.append(clothes[i][0])
-            ans[clothes[i][0]] = 1
-        else:
-            ans[clothes[i][0]] = ans[clothes[i][0]] + 1
+class MaxHeap:
 
-    answer = 1
-    for i in range(len(ans)):
-        answer *= (ans.get(temp[i]) + 1)
+    def __init__(self):
+        self.data = [None]
 
-    return answer - 1
+
+    def insert(self, item):
+        self.data.append(item)
+        i = len(self.data) - 1
+        while i != 1:
+            if self.data[i] > self.data[(i // 2)]:
+                self.data[i], self.data[(i // 2)] = self.data[(i // 2)], self.data[i]
+                i = i // 2
+            else:
+                break
+
+
+def solution(x):
+    return 0
