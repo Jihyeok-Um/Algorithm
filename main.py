@@ -1,10 +1,20 @@
-def solution(n):
-    count = 0
-    while (n != 1):
-        if (n % 2 == 0):
-            n = n // 2
-        elif (n % 2 == 1):
-            n = n - 1
-            count += 1
+def binary(s):
+    num = bin(s)
+    return num
 
-    return count + 1
+
+def solution(s):
+    zero = 0
+    binCount = 0
+    while (s != "0b1"):
+        ss = ""
+        for i in range(len(s)):
+            if (s[i] == "1"):
+                ss += s[i]
+            elif (s[i] == "0"):
+                zero += 1
+        zero -= 1
+        s = str(binary(len(ss)))
+        binCount += 1
+
+    return [binCount, zero + 1]
