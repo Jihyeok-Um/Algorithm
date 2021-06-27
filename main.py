@@ -1,28 +1,42 @@
-from collections import deque
+def changecode(code):
+    code = code.replace('C#', 'c')
+    code = code.replace('D#', 'd')
+    code = code.replace('F#', 'f')
+    code = code.replace('G#', 'g')
+    code = code.replace('A#', 'a')
+    return code
 
-def solution(maps):
-    n = len(maps[0])
-    m = len(maps)
 
-    check = [[0 for i in range(n)] for i in range(m)]
-    dy = [-1, 1, 0, 0]
-    dx = [0, 0, -1, 1]
-    q = deque()
-    q.append([0, 0])
-    check[0][0] = 1
-    while (q):
-        c = q.popleft()
-        for i in range(4):
-            x = c[1] + dx[i]
-            y = c[0] + dy[i]
-            if (x >= 0 and x < n and y >= 0 and y < m and maps[y][x] == 1 and check[y][x] == 0):
-                q.append([y, x])
-                check[y][x] = check[c[0]][c[1]] + 1
+def solution(m, musicinfos):
+    m = changecode(m)
+    names = []
+    runningTime = []
+    for i in range(len(musicinfos)):
+        hours = int(musicinfos[i][6:8]) - int(musicinfos[i][:2])
+        minutes = int(musicinfos[i][9:11]) - int(musicinfos[i][3:5])
+        minutes += hours * 60
+        j = len(musicinfos[i]) - 1
+        while (musicinfos[i][j] != ','):
+            j -= 1
+        code = musicinfos[i][j + 1:len(musicinfos[i])]
+        name = musicinfos[i][12:j]
+        code = changecode(code)
+        full = minutes // len(code)
+        notFull = minutes % len(code)
 
-    for i in range(len(maps)):
-        print(check[i])
+        ans = ""
+        for k in range(full):
+            ans += code
+        for k in range(notFull):
+            ans += code[k]
 
-    if (check[m - 1][n - 1] != 0):
-        return check[m - 1][n - 1]
+        if (m in ans):
+            names.append(name)
+            runningTime.append(minutes)
+
+    if (len(names) == 1):
+        return names[0]
+    elif (len(names) >= 1):
+        return names[runningTime.index(max(runningTime))]
     else:
-        return -1
+        return "(None)"
