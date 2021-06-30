@@ -1,36 +1,67 @@
-import copy
+def numOne(p):
+    if (len(p) == 0):
+        return True
+
+def numTwo(p):
+    u = ""
+    v = ""
+    inCount = outCount = 0
+    for i in p:
+        if (inCount != outCount or inCount == outCount == 0):
+            if (i == '('):
+                inCount += 1
+                u += i
+            else:
+                outCount += 1
+                u += i
+        elif (inCount == outCount):
+            v += i
+    return u, v
+
+def numThree(p):
+    stack = []
+    for i in p:
+        if (i == '('):
+            stack.append(i)
+        elif (i == ')' and len(stack) > 0 and stack[-1] == '('):
+            stack.pop()
+        else:
+            stack.append(i)
+
+    if (len(stack) == 0):
+        return True
+
+def getNewU(u):
+    newU = ""
+    for i in range(len(u)):
+        if (i == 0 or i == len(u) - 1):
+            pass
+        else:
+            if (u[i] == '('):
+                newU += ')'
+            elif (u[i] == ')'):
+                newU += '('
+
+    return newU
+
+def sol(p):
+    if (numOne(p)):
+        return ""
+    u, v = map(str, numTwo(p))
+    if (numThree(u)):
+        return u + sol(v)
+    else:
+        return "(" + sol(v) + ")" + getNewU(u)
 
 
-def solution(y, x, board):
-    check = [[False for i in range(x)] for i in range(y)]
-    arr = [list(map(str, board[i])) for i in range(y)]
-    ans = 0
+def solution(p):
+    if (numOne(p)):
+        return ""
+    if (numThree(p)):
+        return p
+    else:
+        return sol(p)
 
-    while (True):
-        count = 0
-        for i in range(y - 1):
-            for j in range(x - 1):
-                if (arr[i][j] == arr[i][j + 1] == arr[i + 1][j] == arr[i + 1][j + 1] != 'X'):
-                    check[i][j] = check[i][j + 1] = check[i + 1][j] = check[i + 1][j + 1] = True
-                    count += 1
 
-        if (count == 0):
-            return ans
 
-        for i in range(y):
-            for j in range(x):
-                if (check[i][j] == True):
-                    arr[i][j] = "X"
-                    check[i][j] = False
-                    ans += 1
 
-        for i in range(y - 1, -1, -1):
-            for j in range(x):
-                if (arr[i][j] == 'X'):
-                    k = i
-                    while (arr[k][j] == 'X'):
-                        if (k == 0):
-                            break
-                        k -= 1
-                    arr[i][j] = arr[k][j]
-                    arr[k][j] = 'X'
