@@ -1,37 +1,57 @@
-def isRight(s):
-    stack = []
-    for i in s:
-        if (i == '[' or i == '{' or i == '('):
-            stack.append(i)
-        elif ((i == ']' or i == '}' or i == ')') and len(stack) > 0):
-            if (stack[-1] == '[' and i == ']' or stack[-1] == '{' and i == '}' or stack[-1] == '(' and i == ')'):
-                stack.pop()
-        else:
-            stack.append(i)
-
-    if (len(stack) == 0):
-        return True
-    else:
-        return False
+from itertools import permutations
 
 
-def sRotate(s):
-    f = ""
-    newS = ""
-    for i in range(len(s)):
-        if (i == 0):
-            f += s[i]
-        else:
-            newS += s[i]
+def getSik(expression):
+    op = ['*', '-', '+', ')']
+    expression += ")"
+    s = ""
+    sik = []
+    for i in expression:
+        if (i not in op):
+            s += i
+        elif (i in op and i != ')'):
+            sik.append(int(s))
+            s = ""
+            sik.append(i)
+        elif (i == ")"):
+            sik.append(int(s))
+    return sik
 
-    return newS + f
 
-
-def solution(s):
+def solution(expression):
+    sik = getSik(expression)
+    print(sik)
+    o = []
+    for i in range(len(sik)):
+        if (sik[i] not in o and (sik[i] == '+' or sik[i] == '*' or sik[i] == '-')):
+            o.append(sik[i])
+    op = list(map(''.join, permutations(o)))
     ans = 0
-    for i in range(len(s)):
-        if (isRight(s)):
-            ans += 1
-        s = sRotate(s)
+
+    for i in range(len(op)):
+        sik2 = list(sik)
+        for j in range(len(op[i])):
+            k = 0
+            stack = []
+            while (k != len(sik2)):
+                print(stack)
+                stack.append(sik2[k])
+                if (stack[-1] == op[i][j] and op[i][j] == '*'):
+                    stack.pop()
+                    stack[-1] = stack[-1] * sik2[k + 1]
+                    k += 1
+                elif (stack[-1] == op[i][j] and op[i][j] == '-'):
+                    stack.pop()
+                    stack[-1] = stack[-1] - sik2[k + 1]
+                    k += 1
+                elif (stack[-1] == op[i][j] and op[i][j] == '+'):
+                    stack.pop()
+                    stack[-1] = stack[-1] + sik2[k + 1]
+                    k += 1
+                k += 1
+
+            print(stack)
+            sik2 = list(stack)
+        ans = max(ans, abs(stack[0]))
 
     return ans
