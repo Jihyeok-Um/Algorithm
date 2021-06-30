@@ -1,9 +1,22 @@
-def solution(arr1, arr2):
-    ans = [[0 for j in range(len(arr2[0]))] for i in range(len(arr1))]
+from collections import deque
 
-    for i in range(len(arr1)):
-        for j in range(len(arr2[0])):
-            for k in range(len(arr1[0])):
-                ans[i][j] += (arr1[i][k] * arr2[k][j])
 
-    return ans
+def solution(cacheSize, cities):
+    q = deque()
+    time = 0
+    for i in range(len(cities)):
+        cities[i] = cities[i].lower()
+        if (cities[i] in q):
+            time += 1
+        else:
+            time += 5
+
+        if cities[i] in q:
+            q.remove(cities[i])
+        else:
+            if (len(q) == cacheSize and cacheSize != 0):
+                q.popleft()
+        if (cacheSize != 0):
+            q.append(cities[i])
+
+    return time
