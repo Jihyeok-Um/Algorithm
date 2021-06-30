@@ -1,11 +1,11 @@
-def solution(citations):
-    h = 0
-    for i in range(0, 1001):
-        count = 0
-        for j in range(len(citations)):
-            if (citations[j] >= i):
-                count += 1
-        if (count >= i):
-            h = i
+def solution(board):
+    for y in range(len(board) - 1):
+        for x in range(len(board[y]) - 1):
+            if (board[y + 1][x + 1] != 0):
+                board[y + 1][x + 1] = min(board[y][x], board[y + 1][x], board[y][x + 1]) + 1
 
-    return h
+    ans = 0
+    for y in range(len(board)):
+        ans = max(ans, max(board[y]))
+
+    return ans * ans
