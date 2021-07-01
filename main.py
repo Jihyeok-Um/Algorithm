@@ -1,22 +1,20 @@
-from collections import deque
+def solution(msg):
+    ans = []
+    dic = [chr(ord('A') + i) for i in range(26)]
+    i = 0
+    while (i < len(msg)):
+        j = i + 1
+        while (j < len(msg) + 1):
+            if (msg[i:j] in dic):
+                if (msg[i:j + 1] not in dic):
+                    ans.append(dic.index(msg[i:j]) + 1)
+                elif (msg[i:j] == msg[i:j + 1]):
+                    ans.append(dic.index(msg[i:j]) + 1)
+                    return ans
 
-
-def solution(cacheSize, cities):
-    q = deque()
-    time = 0
-    for i in range(len(cities)):
-        cities[i] = cities[i].lower()
-        if (cities[i] in q):
-            time += 1
-        else:
-            time += 5
-
-        if cities[i] in q:
-            q.remove(cities[i])
-        else:
-            if (len(q) == cacheSize and cacheSize != 0):
-                q.popleft()
-        if (cacheSize != 0):
-            q.append(cities[i])
-
-    return time
+            elif (msg[i:j] not in dic):
+                dic.append(msg[i:j])
+                i = j - 2
+                break
+            j += 1
+        i += 1
