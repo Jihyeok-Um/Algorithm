@@ -1,20 +1,32 @@
-def solution(msg):
-    ans = []
-    dic = [chr(ord('A') + i) for i in range(26)]
-    i = 0
-    while (i < len(msg)):
-        j = i + 1
-        while (j < len(msg) + 1):
-            if (msg[i:j] in dic):
-                if (msg[i:j + 1] not in dic):
-                    ans.append(dic.index(msg[i:j]) + 1)
-                elif (msg[i:j] == msg[i:j + 1]):
-                    ans.append(dic.index(msg[i:j]) + 1)
-                    return ans
+def solution(n, t, m, p):
+    arr = ["F", 0]
+    stack = []
+    i = count = 1
+    while (len(arr) < p + m * t):
+        i = count
+        count += 1
+        while (i != 0):
+            stack.append((i % n))
+            i = i // n
 
-            elif (msg[i:j] not in dic):
-                dic.append(msg[i:j])
-                i = j - 2
-                break
-            j += 1
-        i += 1
+        for k in range(len(stack)):
+            temp = stack.pop()
+            if (temp == 10):
+                temp = 'A'
+            elif (temp == 11):
+                temp = 'B'
+            elif (temp == 12):
+                temp = 'C'
+            elif (temp == 13):
+                temp = 'D'
+            elif (temp == 14):
+                temp = 'E'
+            elif (temp == 15):
+                temp = 'F'
+            arr.append(temp)
+
+    ans = ""
+    for i in range(t):
+        ans += str(arr[p + m * i])
+    return ans
+
