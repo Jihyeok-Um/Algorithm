@@ -1,29 +1,36 @@
-def solution(s):
-    s = s[1:-1]
+def solution(n):
+    matrix = [[0 for i in range(n)] for j in range(n)]
+    matrix[0][0] = 1
+    count = 1
+    x = y = where = 0
+    num = n
+
+    while (n != 1):
+        if (count == n):
+            count = 0
+            n -= 1
+            where += 1
+
+        if (where % 3 == 0):
+            matrix[y + 1][x] = matrix[y][x] + 1
+            y = y + 1
+            count += 1
+
+        elif (where % 3 == 1):
+            matrix[y][x + 1] = matrix[y][x] + 1
+            x = x + 1
+            count += 1
+
+        elif (where % 3 == 2):
+            matrix[y - 1][x - 1] = matrix[y][x] + 1
+            y = y - 1
+            x = x - 1
+            count += 1
+
     ans = []
-    i = 0
-    while (i < len(s)):
-        if (s[i] == '{'):
-            i += 1
-            temp = ""
-            small = []
-            while (s[i] != '}'):
-                if (s[i] != ','):
-                    temp += s[i]
-                else:
-                    small.append(int(temp))
-                    temp = ""
-                i += 1
-            small.append(int(temp))
-            ans.append(small)
-        i += 1
+    for y in range(num):
+        for x in range(num):
+            if (matrix[y][x] != 0):
+                ans.append(matrix[y][x])
 
-    answer = []
-    ans.sort(key=len)
-    for i in range(len(ans)):
-        for j in range(len(ans[i])):
-            if (ans[i][j] not in answer):
-                answer.append(ans[i][j])
-
-    return answer
-
+    return ans
