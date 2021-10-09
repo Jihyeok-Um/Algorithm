@@ -1,8 +1,8 @@
-def solution(price, money, count):
+def solution(numbers):
+    num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     sum = 0
-    for i in range(1, count + 1):
-        sum += i * price
-    if ((money - sum) < 0):
-        return sum - money
-    else:
-        return 0
+    for i in num:
+        if (i not in numbers):
+            sum += i
+
+    return sum
