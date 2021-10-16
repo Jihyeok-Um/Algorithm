@@ -1,6 +1,6 @@
 import sys
 from collections import deque
-t = int(input())
+t = 4
 cog = [0]
 turn = []
 for i in range(t):
@@ -37,5 +37,12 @@ for i in range(k):
 count = 0
 for i in range(1,len(cog)):
     if (int(cog[i][0]) == 1):
-        count += 1
+        if (i == 1):
+            count += 1
+        elif (i == 2):
+            count += 2
+        elif (i == 3):
+            count += 4
+        elif (i == 4):
+            count += 8
 print(count)
