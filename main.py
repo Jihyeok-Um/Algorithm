@@ -1,24 +1,28 @@
-from collections import deque
-n, k = map(int, input().split())
-belt = deque(list(map(int, input().split())))
-robot = deque([0]*n)
-level = 0
-while(True):
-    level += 1
-    belt.rotate(1)
-    robot.rotate(1)
-    robot[-1] = 0
+variable = list(map(str, input().split()))
+result = [variable[0] for i in range(len(variable)-1)]
+type = ['[',']','&','*',',',';']
+rever = []
+varName = []
+varDone = 0
 
-    for i in range(n-2,-1,-1):
-        if (robot[i] == 1 and robot[i+1] == 0 and belt[i+1]>=1):
-            robot[i+1] = 1
-            robot[i] = 0
-            belt[i+1] -= 1
-        robot[-1] = 0
+for i in range(1, len(variable)):
+    for j in range(len(variable[i])):
+        if (variable[i][j] not in type):
+            varDone = j
+    varName.append(variable[i][0:varDone+1])
+    rever.append(variable[i][varDone+1:-1])
 
-    if (belt[0] > 0):
-        robot[0] = 1
-        belt[0] -= 1
-    if belt.count(0) >= k:
-        break
-print(level)
+for i in range(len(rever)):
+    for j in range(len(rever[i])-1, -1 ,-1):
+        if(rever[i][j] == ']'):
+            result[i] += '[]'
+        elif(rever[i][j] == '['):
+            continue
+        else:
+            result[i] += rever[i][j]
+    result[i] += " "
+    result[i] += varName[i]
+    result[i] += ";"
+
+for i in range(len(result)):
+    print(result[i])
