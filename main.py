@@ -1,11 +1,24 @@
-def solution(sizes):
-    garo = [0 for i in range(len(sizes))]
-    sero = [0 for i in range(len(sizes))]
-    for i in range(len(sizes)):
-        if (sizes[i][0] < sizes[i][1]):
-            sizes[i][0], sizes[i][1] = sizes[i][1], sizes[i][0]
-        garo[i] = sizes[i][0]
-        sero[i] = sizes[i][1]
+from collections import deque
+n, k = map(int, input().split())
+belt = deque(list(map(int, input().split())))
+robot = deque([0]*n)
+level = 0
+while(True):
+    level += 1
+    belt.rotate(1)
+    robot.rotate(1)
+    robot[-1] = 0
 
-    result = max(garo) * max(sero)
-    return result
+    for i in range(n-2,-1,-1):
+        if (robot[i] == 1 and robot[i+1] == 0 and belt[i+1]>=1):
+            robot[i+1] = 1
+            robot[i] = 0
+            belt[i+1] -= 1
+        robot[-1] = 0
+
+    if (belt[0] > 0):
+        robot[0] = 1
+        belt[0] -= 1
+    if belt.count(0) >= k:
+        break
+print(level)
