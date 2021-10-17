@@ -1,48 +1,59 @@
-import sys
-from collections import deque
-t = 4
-cog = [0]
-turn = []
-for i in range(t):
-    cog.append(deque(sys.stdin.readline().rstrip()))
-k = int(input())
-for i in range(k):
-    turn.append(list(map(int, input().split())))
+n,m = map(int, input().split())
+r,c,d = map(int, input().split())
+matrix = [list(map(int, input().split())) for i in range(n)]
+isclean = [[0 for j in range(m)] for i in range(n)]
+result = 0
 
-def lowCog(cogNum, turn):
-    if (cog[cogNum-1][2] != cog[cogNum][6]):
-        chain[cogNum-1] = turn*-1
-        if (cogNum > 2):
-            lowCog(cogNum-1, chain[cogNum-1])
-    else:
-        return
-def highCog(cogNum, turn):
-    if (cog[cogNum][2] != cog[cogNum+1][6]):
-        chain[cogNum+1] = turn*-1
-        if(cogNum < len(cog)-2):
-            highCog(cogNum+1, chain[cogNum+1])
-    else:
-        return
+while(True):
+    if (isclean[r][c] == 0):
+        isclean[r][c] = 1
+        result += 1
+    isTurn = 0
+    for i in range(4):
+        if (d == 0):
+            d = 3
+            if (matrix[r][c-1] != 1 and isclean[r][c-1] == 0):
+                c = c-1
+                isTurn = 1
+                break
+        elif (d == 1):
+            d = 0
+            if (matrix[r-1][c] != 1 and isclean[r-1][c] == 0):
+                r = r-1
+                isTurn = 1
+                break
+        elif (d == 2):
+            d = 1
+            if (matrix[r][c+1] != 1 and isclean[r][c+1] == 0):
+                c = c+1
+                isTurn = 1
+                break
+        elif (d == 3):
+            d = 2
+            if (matrix[r+1][c] != 1 and isclean[r+1][c] == 0):
+                r = r+1
+                isTurn = 1
+                break
+    if (isTurn == 0):
+        if (d == 0):
+            if (matrix[r+1][c] != 1):
+                r = r+1
+            else:
+                break
+        elif (d == 1):
+            if (matrix[r][c-1] != 1):
+                c = c-1
+            else:
+                break
+        elif (d == 2):
+            if (matrix[r-1][c] != 1):
+                r = r-1
+            else:
+                break
+        elif (d == 3):
+            if (matrix[r][c+1] != 1):
+                c = c+1
+            else:
+                break
 
-for i in range(k):
-    chain = [0 for i in range(len(cog))]
-    chain[turn[i][0]] = turn[i][1]
-    if (turn[i][0] != 1):
-        lowCog(turn[i][0], turn[i][1])
-    if (turn[i][0] != len(cog)-1):
-        highCog(turn[i][0], turn[i][1])
-    for j in range(1, len(cog)):
-        cog[j].rotate(chain[j])
-
-count = 0
-for i in range(1,len(cog)):
-    if (int(cog[i][0]) == 1):
-        if (i == 1):
-            count += 1
-        elif (i == 2):
-            count += 2
-        elif (i == 3):
-            count += 4
-        elif (i == 4):
-            count += 8
-print(count)
+print(result)
