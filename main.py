@@ -1,34 +1,27 @@
-n,m,y,x,k = map(int, input().split())
-d = [0,2,3,1,4,5]
-dice = [0,0,0,0,0,0]
-order = []
+from itertools import combinations
+n, m = map(int, input().split())
 matrix = []
 for i in range(n):
     matrix.append(list(map(int, input().split())))
-order = list(map(int, input().split()))
 
-def rollDice():
-    if (matrix[y][x] == 0):
-        matrix[y][x] = dice[d[5]]
-    else:
-        dice[d[5]] = matrix[y][x]
-        matrix[y][x] = 0
-    print(dice[d[0]])
+chicken = []
+house = []
+for i in range(n):
+    for j in range(n):
+        if (matrix[i][j] == 1):
+            house.append([i+1,j+1])
+        elif (matrix[i][j] == 2):
+            chicken.append([i+1,j+1])
+chicken = list(combinations(chicken,m))
+distance = [[99999 for i in range(len(house))] for i in range(len(chicken))]
 
-for k in order:
-    if (k == 1 and x <= m-2):
-        x += 1
-        d = [d[1],d[5],d[0],d[3],d[4],d[2]]
-        rollDice()
-    elif (k == 2 and x >= 1):
-        x -= 1
-        d = [d[2],d[0],d[5],d[3],d[4],d[1]]
-        rollDice()
-    elif (k == 3 and y >= 1):
-        y -= 1
-        d = [d[4],d[1],d[2],d[0],d[5],d[3]]
-        rollDice()
-    elif (k == 4 and y <= n-2):
-        y += 1
-        d = [d[3],d[1],d[2],d[5],d[0],d[4]]
-        rollDice()
+for i in range(len(chicken)):
+    for j in range(len(chicken[i])):
+        for k in range(len(house)):
+            dis = abs(chicken[i][j][0]-house[k][0])+abs(chicken[i][j][1]-house[k][1])
+            if (dis < distance[i][k]):
+                distance[i][k] = dis
+
+for i in range(len(distance)):
+    distance[i] = sum(distance[i])
+print(min(distance))
