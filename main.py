@@ -1,25 +1,34 @@
-n = int(input())
-dice = []
-opposite = [5,3,4,1,2,0]
+n,m,y,x,k = map(int, input().split())
+d = [0,2,3,1,4,5]
+dice = [0,0,0,0,0,0]
+order = []
+matrix = []
 for i in range(n):
-    dice.append(list(map(int, input().split())))
+    matrix.append(list(map(int, input().split())))
+order = list(map(int, input().split()))
 
-sum = [0 for i in range(6)]
-for i in range(6):
-    m = 0
-    up = dice[0][opposite[i]]
-    for j in range(6):
-        if (j != i and j != opposite[i]):
-            if (dice[0][j] > m):
-                m = dice[0][j]
-    sum[i] += m
-    for j in range(1, n):
-        s = dice[j].index(up)
-        up = dice[j][opposite[dice[j].index(up)]]
-        m = 0
-        for k in range(6):
-            if (k != s and k != opposite[s]):
-                if (dice[j][k] > m):
-                    m = dice[j][k]
-        sum[i] += m
-print(max(sum))
+def rollDice():
+    if (matrix[y][x] == 0):
+        matrix[y][x] = dice[d[5]]
+    else:
+        dice[d[5]] = matrix[y][x]
+        matrix[y][x] = 0
+    print(dice[d[0]])
+
+for k in order:
+    if (k == 1 and x <= m-2):
+        x += 1
+        d = [d[1],d[5],d[0],d[3],d[4],d[2]]
+        rollDice()
+    elif (k == 2 and x >= 1):
+        x -= 1
+        d = [d[2],d[0],d[5],d[3],d[4],d[1]]
+        rollDice()
+    elif (k == 3 and y >= 1):
+        y -= 1
+        d = [d[4],d[1],d[2],d[0],d[5],d[3]]
+        rollDice()
+    elif (k == 4 and y <= n-2):
+        y += 1
+        d = [d[3],d[1],d[2],d[5],d[0],d[4]]
+        rollDice()
