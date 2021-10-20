@@ -5,6 +5,7 @@ dx = [1, 0, -1, 0]
 dy = [0, -1, 0, 1]
 ans = 0
 c = 0
+ans2 = 0
 n, m = map(int, input().split())
 matrix = []
 for i in range(n):
@@ -16,6 +17,8 @@ for i in range(n):
 
 ans = 0
 while (c):
+    if (c != 0):
+        ans2 = c
     q.append([0, 0])
     while (q):
         temp = q.popleft()
@@ -32,7 +35,7 @@ while (c):
                 for k in range(4):
                     if (i + dy[k] >= 0 and i + dy[k] < n and j + dx[k] >= 0 and j + dx[k] < m and matrix[i + dy[k]][j + dx[k]] == 2):
                         count += 1
-                if (count >= 2):
+                if (count >= 1):
                     matrix[i][j] = 3
                     c -= 1
 
@@ -41,6 +44,8 @@ while (c):
             if (matrix[i][j] == 2 or matrix[i][j] == 3):
                 matrix[i][j] = 0
 
+
     ans += 1
 
 print(ans)
+print(ans2)
