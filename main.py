@@ -1,27 +1,46 @@
-from itertools import combinations
+from collections import deque
+
+q = deque()
+dx = [1, 0, -1, 0]
+dy = [0, -1, 0, 1]
+ans = 0
+c = 0
 n, m = map(int, input().split())
 matrix = []
 for i in range(n):
     matrix.append(list(map(int, input().split())))
-
-chicken = []
-house = []
 for i in range(n):
-    for j in range(n):
-        if (matrix[i][j] == 1):
-            house.append([i+1,j+1])
-        elif (matrix[i][j] == 2):
-            chicken.append([i+1,j+1])
-chicken = list(combinations(chicken,m))
-distance = [[99999 for i in range(len(house))] for i in range(len(chicken))]
+    for j in range(m):
+        if (matrix[i][j]) == 1:
+            c += 1
 
-for i in range(len(chicken)):
-    for j in range(len(chicken[i])):
-        for k in range(len(house)):
-            dis = abs(chicken[i][j][0]-house[k][0])+abs(chicken[i][j][1]-house[k][1])
-            if (dis < distance[i][k]):
-                distance[i][k] = dis
+ans = 0
+while (c):
+    q.append([0, 0])
+    while (q):
+        temp = q.popleft()
+        for i in range(0, 4):
+            if (temp[0] + dx[i] >= 0 and temp[0] + dx[i] < m and temp[1] + dy[i] >= 0 and temp[1] + dy[i] < n and matrix[temp[1] + dy[i]][temp[0] + dx[i]] == 0):
+                if (matrix[temp[1] + dy[i]][temp[0] + dx[i]] != 1):
+                    matrix[temp[1] + dy[i]][temp[0] + dx[i]] = 2
+                    q.append([temp[0] + dx[i], temp[1] + dy[i]])
 
-for i in range(len(distance)):
-    distance[i] = sum(distance[i])
-print(min(distance))
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if (matrix[i][j] == 1):
+                count = 0
+                for k in range(4):
+                    if (i + dy[k] >= 0 and i + dy[k] < n and j + dx[k] >= 0 and j + dx[k] < m and matrix[i + dy[k]][j + dx[k]] == 2):
+                        count += 1
+                if (count >= 2):
+                    matrix[i][j] = 3
+                    c -= 1
+
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if (matrix[i][j] == 2 or matrix[i][j] == 3):
+                matrix[i][j] = 0
+
+    ans += 1
+
+print(ans)
