@@ -1,4 +1,5 @@
 import sys
+import copy
 sys.setrecursionlimit(10000)
 
 from collections import deque
@@ -8,7 +9,7 @@ check = [[0 for i in range(m)] for i in range(n)]
 dy = [-1, 1, 0, 0]
 dx = [0, 0, -1, 1]
 direction = []
-matrix = start = end = []
+matrix = []
 for i in range(n):
     matrix.append(list(input()))
 result = 100
@@ -21,10 +22,8 @@ for i in range(n):
         elif (matrix[i][j] == "R"):
             red = [j,i]
 
-def dfs(matrix, direction, depth):
+def dfs(matrix, direction, depth, red, blue):
     global result
-    global blue
-    global red
     if (depth > 10 or depth > result):
         return
     if(direction == 0):
@@ -189,21 +188,16 @@ def dfs(matrix, direction, depth):
             else:
                 break
 
-    for i in range(n):
-        print(matrix[i])
-    print(depth)
-    print()
 
     for i in range(4):
         if (i != direction):
-            dfs(list(matrix), i, depth+1)
+            dfs(copy.deepcopy(matrix), i, depth+1, copy.deepcopy(red), copy.deepcopy(blue))
 
-matrix2 = list(matrix)
-matrix3 = list(matrix)
-matrix4 = list(matrix)
-dfs(matrix,0,1)
-dfs(matrix2,1,1)
-dfs(matrix3,2,1)
-dfs(matrix4,3,1)
 
-print(result)
+for i in range(4):
+    dfs(copy.deepcopy(matrix),i,1,copy.deepcopy(red),copy.deepcopy(blue))
+
+if(result <= 10):
+    print(result)
+else:
+    print(-1)
