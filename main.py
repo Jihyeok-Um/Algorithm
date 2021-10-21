@@ -9,10 +9,12 @@ check = [[0 for i in range(m)] for i in range(n)]
 dy = [-1, 1, 0, 0]
 dx = [0, 0, -1, 1]
 direction = []
+command = ""
 matrix = []
 for i in range(n):
     matrix.append(list(input()))
 result = 100
+resultCommand = ""
 blue = red = []
 
 for i in range(n):
@@ -22,11 +24,13 @@ for i in range(n):
         elif (matrix[i][j] == "R"):
             red = [j,i]
 
-def dfs(matrix, direction, depth, red, blue):
+def dfs(matrix, direction, depth, red, blue, command):
     global result
+    global resultCommand
     if (depth > 10 or depth > result):
         return
     if(direction == 0):
+        command += "U"
         while (True):
             if (matrix[blue[1]-1][blue[0]] == "."):
                 matrix[blue[1]][blue[0]] = "."
@@ -64,10 +68,12 @@ def dfs(matrix, direction, depth, red, blue):
                 matrix[red[1]][red[0]] = "."
                 if (depth < result):
                     result = depth
+                    resultCommand = command
                 return
             else:
                 break
     elif(direction == 1):
+        command += "D"
         while (True):
             if (matrix[blue[1]+1][blue[0]] == "."):
                 matrix[blue[1]][blue[0]] = "."
@@ -104,10 +110,12 @@ def dfs(matrix, direction, depth, red, blue):
             elif (matrix[red[1]+1][red[0]] == "O"):
                 if (depth < result):
                     result = depth
+                    resultCommand = command
                 return
             else:
                 break
     elif(direction == 2):
+        command += "L"
         while (True):
             if (matrix[blue[1]][blue[0]-1] == "."):
                 matrix[blue[1]][blue[0]] = "."
@@ -144,10 +152,12 @@ def dfs(matrix, direction, depth, red, blue):
             elif (matrix[red[1]][red[0]-1] == "O"):
                 if (depth < result):
                     result = depth
+                    resultCommand = command
                 return
             else:
                 break
     elif(direction == 3):
+        command += "R"
         while (True):
             if (matrix[blue[1]][blue[0]+1] == "."):
                 matrix[blue[1]][blue[0]] = "."
@@ -184,6 +194,7 @@ def dfs(matrix, direction, depth, red, blue):
             elif (matrix[red[1]][red[0]+1] == "O"):
                 if (depth < result):
                     result = depth
+                    resultCommand = command
                 return
             else:
                 break
@@ -191,13 +202,14 @@ def dfs(matrix, direction, depth, red, blue):
 
     for i in range(4):
         if (i != direction):
-            dfs(copy.deepcopy(matrix), i, depth+1, copy.deepcopy(red), copy.deepcopy(blue))
+            dfs(copy.deepcopy(matrix), i, depth+1, copy.deepcopy(red), copy.deepcopy(blue), command)
 
 
 for i in range(4):
-    dfs(copy.deepcopy(matrix),i,1,copy.deepcopy(red),copy.deepcopy(blue))
+    dfs(copy.deepcopy(matrix),i,1,copy.deepcopy(red),copy.deepcopy(blue),command)
 
 if(result <= 10):
-    print(1)
+    print(result)
+    print(resultCommand)
 else:
-    print(0)
+    print(-1)
