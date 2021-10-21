@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(10000)
+
 from collections import deque
 q = deque()
 n,m = map(int, input().split())
@@ -8,83 +11,38 @@ direction = []
 matrix = start = end = []
 for i in range(n):
     matrix.append(list(input()))
+result = 100
+blue = red = []
 
 for i in range(n):
     for j in range(m):
-        if (matrix[i][j] == "R"):
-            q.append([j, i, -1])
-            start = [j, i]
-            red = [j,i]
-        elif (matrix[i][j] == "O"):
-            end = [j,i]
-        elif (matrix[i][j] == "B"):
+        if (matrix[i][j] == "B"):
             blue = [j,i]
-while(q):
-    c = q.popleft()
-    if([c[0],c[1]] == end):
-        break
-    for i in range(4):
-        if (c[0]+dx[i] >= 0 and c[0]+dx[i] < m and c[1]+dy[i] >= 0 and c[1]+dy[i] < n and matrix[c[1]+dy[i]][c[0]+dx[i]] != '#' and ([c[0]+dx[i],c[1]+dy[i]] != start)):
-            if ((check[c[1]+dy[i]][c[0]+dx[i]]) == 0 or (check[c[1]][c[0]] < check[c[1]+dy[i]][c[0]+dx[i]])):
-                for j in range(len(direction)):
-                    if (direction[j][0] == [c[0],c[1]]):
-                        direction[j][0] = [c[0]+dx[i],c[1]+dy[i]]
-                        if (direction[j][1][-1] != str(i)):
-                            direction[j][1] += str(i)
-                if (c[2] == i):
-                    check[c[1]+dy[i]][c[0]+dx[i]] = check[c[1]][c[0]]
-                else:
-                    check[c[1]+dy[i]][c[0]+dx[i]] = check[c[1]][c[0]] + 1
-                    X = False
-                    for j in range(len(direction)):
-                        if (direction[j][0] == [c[0]+dx[i],c[1]+dy[i]]):
-                            X = True
-                    if(X == False):
-                     direction.append([[c[0]+dx[i],c[1]+dy[i]],str(i)])
-                q.append([c[0]+dx[i],c[1]+dy[i],i])
+        elif (matrix[i][j] == "R"):
+            red = [j,i]
 
-for i in range(len(check)):
-    print(check[i])
-print()
-
-result = ""
-for i in range(len(direction)):
-    if (direction[i][0] == end):
-        result = direction[i][1]
-
-redO = False
-blueO = False
-for i in result:
-    if(i == "0"):
-        while(True):
-            if (matrix[red[1]-1][red[0]] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1]-1][red[0]] = "R"
-                red = [red[0],red[1]-1]
-            elif (matrix[red[1]-1][red[0]] == "O"):
-                redO = True
-                matrix[red[1]][red[0]] = "."
-                break
-            else:
-                break
+def dfs(matrix, direction, depth):
+    global result
+    global blue
+    global red
+    if (depth > 10 or depth > result):
+        return
+    if(direction == 0):
         while (True):
             if (matrix[blue[1]-1][blue[0]] == "."):
                 matrix[blue[1]][blue[0]] = "."
                 matrix[blue[1]-1][blue[0]] = "B"
                 blue = [blue[0],blue[1]-1]
             elif (matrix[blue[1]-1][blue[0]] == "O"):
-                blueO = True
-                matrix[blue[1]][blue[0]] = "."
-                break
+                return
             else:
                 break
         while (True):
             if (matrix[red[1] - 1][red[0]] == "."):
                 matrix[red[1]][red[0]] = "."
                 matrix[red[1] - 1][red[0]] = "R"
-                red = [red[0],red[1]-1]
+                red = [red[0], red[1] - 1]
             elif (matrix[red[1] - 1][red[0]] == "O"):
-                redO = True
                 matrix[red[1]][red[0]] = "."
                 break
             else:
@@ -95,19 +53,37 @@ for i in result:
                 matrix[blue[1] - 1][blue[0]] = "B"
                 blue = [blue[0],blue[1]-1]
             elif (matrix[blue[1] - 1][blue[0]] == "O"):
-                blueO = True
-                matrix[blue[1]][blue[0]] = "."
-                break
+                return
             else:
                 break
-    elif(i == "1"):
+        while (True):
+            if (matrix[red[1] - 1][red[0]] == "."):
+                matrix[red[1]][red[0]] = "."
+                matrix[red[1] - 1][red[0]] = "R"
+                red = [red[0],red[1]-1]
+            elif (matrix[red[1] - 1][red[0]] == "O"):
+                matrix[red[1]][red[0]] = "."
+                if (depth < result):
+                    result = depth
+                return
+            else:
+                break
+    elif(direction == 1):
+        while (True):
+            if (matrix[blue[1]+1][blue[0]] == "."):
+                matrix[blue[1]][blue[0]] = "."
+                matrix[blue[1]+1][blue[0]] = "B"
+                blue = [blue[0],blue[1]+1]
+            elif (matrix[blue[1]+1][blue[0]] == "O"):
+                return
+            else:
+                break
         while (True):
             if (matrix[red[1]+1][red[0]] == "."):
                 matrix[red[1]][red[0]] = "."
                 matrix[red[1]+1][red[0]] = "R"
                 red = [red[0],red[1]+1]
             elif (matrix[red[1]+1][red[0]] == "O"):
-                redO = True
                 matrix[red[1]][red[0]] = "."
                 break
             else:
@@ -118,9 +94,7 @@ for i in result:
                 matrix[blue[1]+1][blue[0]] = "B"
                 blue = [blue[0],blue[1]+1]
             elif (matrix[blue[1]+1][blue[0]] == "O"):
-                blueO = True
-                matrix[blue[1]][blue[0]] = "."
-                break
+                return
             else:
                 break
         while (True):
@@ -129,30 +103,27 @@ for i in result:
                 matrix[red[1]+1][red[0]] = "R"
                 red = [red[0],red[1]+1]
             elif (matrix[red[1]+1][red[0]] == "O"):
-                redO = True
-                matrix[red[1]][red[0]] = "."
-                break
+                if (depth < result):
+                    result = depth
+                return
             else:
                 break
+    elif(direction == 2):
         while (True):
-            if (matrix[blue[1]+1][blue[0]] == "."):
+            if (matrix[blue[1]][blue[0]-1] == "."):
                 matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]+1][blue[0]] = "B"
-                blue = [blue[0],blue[1]+1]
-            elif (matrix[blue[1]+1][blue[0]] == "O"):
-                blueO = True
-                matrix[blue[1]][blue[0]] = "."
-                break
+                matrix[blue[1]][blue[0]-1] = "B"
+                blue = [blue[0]-1,blue[1]]
+            elif (matrix[blue[1]][blue[0]-1] == "O"):
+                return
             else:
                 break
-    elif(i == "2"):
         while (True):
             if (matrix[red[1]][red[0]-1] == "."):
                 matrix[red[1]][red[0]] = "."
                 matrix[red[1]][red[0]-1] = "R"
                 red = [red[0]-1,red[1]]
             elif (matrix[red[1]][red[0]-1] == "O"):
-                redO = True
                 matrix[red[1]][red[0]] = "."
                 break
             else:
@@ -163,9 +134,7 @@ for i in result:
                 matrix[blue[1]][blue[0]-1] = "B"
                 blue = [blue[0]-1,blue[1]]
             elif (matrix[blue[1]][blue[0]-1] == "O"):
-                blueO = True
-                matrix[blue[1]][blue[0]] = "."
-                break
+                return
             else:
                 break
         while (True):
@@ -174,30 +143,27 @@ for i in result:
                 matrix[red[1]][red[0]-1] = "R"
                 red = [red[0]-1,red[1]]
             elif (matrix[red[1]][red[0]-1] == "O"):
-                redO = True
-                matrix[red[1]][red[0]] = "."
-                break
+                if (depth < result):
+                    result = depth
+                return
             else:
                 break
+    elif(direction == 3):
         while (True):
-            if (matrix[blue[1]][blue[0]-1] == "."):
+            if (matrix[blue[1]][blue[0]+1] == "."):
                 matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]][blue[0]-1] = "B"
-                blue = [blue[0]-1,blue[1]]
-            elif (matrix[blue[1]][blue[0]-1] == "O"):
-                matrix[blue[1]][blue[0]] = "."
-                blueO = True
-                break
+                matrix[blue[1]][blue[0]+1] = "B"
+                blue = [blue[0]+1, blue[1]]
+            elif (matrix[blue[1]][blue[0]+1] == "O"):
+                return
             else:
                 break
-    elif(i == "3"):
         while (True):
             if (matrix[red[1]][red[0]+1] == "."):
                 matrix[red[1]][red[0]] = "."
                 matrix[red[1]][red[0]+1] = "R"
                 red = [red[0]+1,red[1]]
             elif (matrix[red[1]][red[0]+1] == "O"):
-                redO = True
                 matrix[red[1]][red[0]] = "."
                 break
             else:
@@ -208,9 +174,7 @@ for i in result:
                 matrix[blue[1]][blue[0]+1] = "B"
                 blue = [blue[0]+1,blue[1]]
             elif (matrix[blue[1]][blue[0]+1] == "O"):
-                matrix[blue[1]][blue[0]] = "."
-                blueO = True
-                break
+                return
             else:
                 break
         while (True):
@@ -219,29 +183,27 @@ for i in result:
                 matrix[red[1]][red[0]+1] = "R"
                 red = [red[0]+1,red[1]]
             elif (matrix[red[1]][red[0]+1] == "O"):
-                matrix[red[1]][red[0]] = "."
-                redO = True
-                break
+                if (depth < result):
+                    result = depth
+                return
             else:
                 break
-        while (True):
-            if (matrix[blue[1]][blue[0]+1] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]][blue[0]+1] = "B"
-                blue = [blue[0]+1, blue[1]]
-            elif (matrix[blue[1]][blue[0]+1] == "O"):
-                matrix[blue[1]][blue[0]] = "."
-                blueO = True
-                break
-            else:
-                break
+
     for i in range(n):
         print(matrix[i])
+    print(depth)
     print()
 
-if(redO == True and blueO == False and check[end[1]][end[0]] < 10):
-    print(1)
-else:
-    print(0)
+    for i in range(4):
+        if (i != direction):
+            dfs(list(matrix), i, depth+1)
+
+matrix2 = list(matrix)
+matrix3 = list(matrix)
+matrix4 = list(matrix)
+dfs(matrix,0,1)
+dfs(matrix2,1,1)
+dfs(matrix3,2,1)
+dfs(matrix4,3,1)
 
 print(result)
