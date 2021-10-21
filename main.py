@@ -198,6 +198,6 @@ for i in range(4):
     dfs(copy.deepcopy(matrix),i,1,copy.deepcopy(red),copy.deepcopy(blue))
 
 if(result <= 10):
-    print(result)
+    print(1)
 else:
-    print(-1)
+    print(0)
