@@ -1,215 +1,208 @@
-import sys
-import copy
-sys.setrecursionlimit(10000)
-
-from collections import deque
-q = deque()
-n,m = map(int, input().split())
-check = [[0 for i in range(m)] for i in range(n)]
-dy = [-1, 1, 0, 0]
-dx = [0, 0, -1, 1]
-direction = []
-command = ""
+n = int(input())
 matrix = []
+check = [[0 for i in range(n)] for i in range(n)]
+dy = [0,1,0,-1]
+dx = [-1,0,1,0]
+t = [int(n/2), int(n/2)]
 for i in range(n):
-    matrix.append(list(input()))
-result = 100
-resultCommand = ""
-blue = red = []
+    matrix.append(list(map(int, input().split())))
+check[t[0]][t[1]] = 0
+def tornado():
+    count = 1
+    while(t != [0,0]):
+        for i in range(0,2):
+            for j in range(count):
+                if (t[0]+dx[i] >= 0 and t[0]+dx[i] < n and t[1]+dy[i] >= 0 and t[1]+dy[i] < n):
+                    check[t[1]+dy[i]][t[0]+dx[i]] = check[t[1]][t[0]] + 1
+                    t[0] = t[0]+dx[i]
+                    t[1] = t[1]+dy[i]
+                    sand(i)
+                    if(t == [0,0]):
+                        return
+        count += 1
+        for i in range(2,4):
+            for j in range(count):
+                if (t[0]+dx[i] >= 0 and t[0]+dx[i] < n and t[1]+dy[i] >= 0 and t[1]+dy[i] < n):
+                    check[t[1] + dy[i]][t[0] + dx[i]] = check[t[1]][t[0]] + 1
+                    t[0] = t[0]+dx[i]
+                    t[1] = t[1]+dy[i]
+                    sand(i)
+                    if (t == [0, 0]):
+                        return
+        count += 1
 
-for i in range(n):
-    for j in range(m):
-        if (matrix[i][j] == "B"):
-            blue = [j,i]
-        elif (matrix[i][j] == "R"):
-            red = [j,i]
+ans = 0
+def sand(d):
+    global ans
+    if(d == 1):
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]+1][t[0]]+= matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
+        else:
+            ans += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
+        if (t[1]+2 >= 0 and t[1]+2 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]+2][t[0]]+= int((matrix[t[1]][t[0]]/100)*5)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*5)
+        if (t[1] >= 0 and t[1] < n and t[0]-1 >= 0 and t[0]-1 < n):
+            matrix[t[1]][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*7)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*7)
+        if (t[1] >= 0 and t[1] < n and t[0]+1 >= 0 and t[0]+1 < n):
+            matrix[t[1]][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*7)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*7)
+        if (t[1] >= 0 and t[1] < n and t[0]+2 >= 0 and t[0]+2 < n):
+            matrix[t[1]][t[0]+2]+= int((matrix[t[1]][t[0]]/100)*2)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*2)
+        if (t[1] >= 0 and t[1] < n and t[0]-2 >= 0 and t[0]-2 < n):
+            matrix[t[1]][t[0]-2]+= int((matrix[t[1]][t[0]]/100)*2)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*2)
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]+1 >= 0 and t[0]+1 < n):
+            matrix[t[1]+1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*10)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*10)
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]-1 >= 0 and t[0]-1 < n):
+            matrix[t[1]+1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*10)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*10)
+        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]+1 >= 0 and t[0]+1 < n):
+            matrix[t[1]-1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*1)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*1)
+        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]-1 >= 0 and t[0]-1 < n):
+            matrix[t[1]-1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*1)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*1)
+        matrix[t[1]][t[0]] = 0
+    elif(d == 0):
+        if (t[1] >= 0 and t[1] < n and t[0]-1 >= 0 and t[0]-1 < n):
+            matrix[t[1]][t[0]-1]+= matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
+        else:
+            ans += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
+        if (t[1] >= 0 and t[1] < n and t[0]-2 >= 0 and t[0]-2 < n):
+            matrix[t[1]][t[0]-2]+= int((matrix[t[1]][t[0]]/100)*5)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*5)
+        if (t[1]-1 >= 0 and t[1]-1 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]-1][t[0]]+= int((matrix[t[1]][t[0]]/100)*7)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*7)
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]+1][t[0]]+= int((matrix[t[1]][t[0]]/100)*7)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*7)
+        if (t[1]+2 >= 0 and t[1]+2 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]+2][t[0]]+= int((matrix[t[1]][t[0]]/100)*2)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*2)
+        if (t[1]-2 >= 0 and t[1]-2 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]-2][t[0]]+= int((matrix[t[1]][t[0]]/100)*2)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*2)
+        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]-1 >= 0 and t[0]-1 < n):
+            matrix[t[1]-1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*10)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*10)
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]-1 >= 0 and t[0]-1 < n):
+            matrix[t[1]+1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*10)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*10)
+        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]+1 >= 0 and t[0]+1 < n):
+            matrix[t[1]-1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*1)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*1)
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]+1 >= 0 and t[0]+1 < n):
+            matrix[t[1]+1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*1)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*1)
+        matrix[t[1]][t[0]] = 0
 
-def dfs(matrix, direction, depth, red, blue, command):
-    global result
-    global resultCommand
-    if (depth > 10 or depth > result):
-        return
-    if(direction == 0):
-        command += "U"
-        while (True):
-            if (matrix[blue[1]-1][blue[0]] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]-1][blue[0]] = "B"
-                blue = [blue[0],blue[1]-1]
-            elif (matrix[blue[1]-1][blue[0]] == "O"):
-                return
-            else:
-                break
-        while (True):
-            if (matrix[red[1] - 1][red[0]] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1] - 1][red[0]] = "R"
-                red = [red[0], red[1] - 1]
-            elif (matrix[red[1] - 1][red[0]] == "O"):
-                matrix[red[1]][red[0]] = "."
-                break
-            else:
-                break
-        while (True):
-            if (matrix[blue[1] - 1][blue[0]] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1] - 1][blue[0]] = "B"
-                blue = [blue[0],blue[1]-1]
-            elif (matrix[blue[1] - 1][blue[0]] == "O"):
-                return
-            else:
-                break
-        while (True):
-            if (matrix[red[1] - 1][red[0]] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1] - 1][red[0]] = "R"
-                red = [red[0],red[1]-1]
-            elif (matrix[red[1] - 1][red[0]] == "O"):
-                matrix[red[1]][red[0]] = "."
-                if (depth < result):
-                    result = depth
-                    resultCommand = command
-                return
-            else:
-                break
-    elif(direction == 1):
-        command += "D"
-        while (True):
-            if (matrix[blue[1]+1][blue[0]] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]+1][blue[0]] = "B"
-                blue = [blue[0],blue[1]+1]
-            elif (matrix[blue[1]+1][blue[0]] == "O"):
-                return
-            else:
-                break
-        while (True):
-            if (matrix[red[1]+1][red[0]] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1]+1][red[0]] = "R"
-                red = [red[0],red[1]+1]
-            elif (matrix[red[1]+1][red[0]] == "O"):
-                matrix[red[1]][red[0]] = "."
-                break
-            else:
-                break
-        while (True):
-            if (matrix[blue[1]+1][blue[0]] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]+1][blue[0]] = "B"
-                blue = [blue[0],blue[1]+1]
-            elif (matrix[blue[1]+1][blue[0]] == "O"):
-                return
-            else:
-                break
-        while (True):
-            if (matrix[red[1]+1][red[0]] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1]+1][red[0]] = "R"
-                red = [red[0],red[1]+1]
-            elif (matrix[red[1]+1][red[0]] == "O"):
-                if (depth < result):
-                    result = depth
-                    resultCommand = command
-                return
-            else:
-                break
-    elif(direction == 2):
-        command += "L"
-        while (True):
-            if (matrix[blue[1]][blue[0]-1] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]][blue[0]-1] = "B"
-                blue = [blue[0]-1,blue[1]]
-            elif (matrix[blue[1]][blue[0]-1] == "O"):
-                return
-            else:
-                break
-        while (True):
-            if (matrix[red[1]][red[0]-1] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1]][red[0]-1] = "R"
-                red = [red[0]-1,red[1]]
-            elif (matrix[red[1]][red[0]-1] == "O"):
-                matrix[red[1]][red[0]] = "."
-                break
-            else:
-                break
-        while (True):
-            if (matrix[blue[1]][blue[0]-1] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]][blue[0]-1] = "B"
-                blue = [blue[0]-1,blue[1]]
-            elif (matrix[blue[1]][blue[0]-1] == "O"):
-                return
-            else:
-                break
-        while (True):
-            if (matrix[red[1]][red[0]-1] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1]][red[0]-1] = "R"
-                red = [red[0]-1,red[1]]
-            elif (matrix[red[1]][red[0]-1] == "O"):
-                if (depth < result):
-                    result = depth
-                    resultCommand = command
-                return
-            else:
-                break
-    elif(direction == 3):
-        command += "R"
-        while (True):
-            if (matrix[blue[1]][blue[0]+1] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]][blue[0]+1] = "B"
-                blue = [blue[0]+1, blue[1]]
-            elif (matrix[blue[1]][blue[0]+1] == "O"):
-                return
-            else:
-                break
-        while (True):
-            if (matrix[red[1]][red[0]+1] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1]][red[0]+1] = "R"
-                red = [red[0]+1,red[1]]
-            elif (matrix[red[1]][red[0]+1] == "O"):
-                matrix[red[1]][red[0]] = "."
-                break
-            else:
-                break
-        while (True):
-            if (matrix[blue[1]][blue[0]+1] == "."):
-                matrix[blue[1]][blue[0]] = "."
-                matrix[blue[1]][blue[0]+1] = "B"
-                blue = [blue[0]+1,blue[1]]
-            elif (matrix[blue[1]][blue[0]+1] == "O"):
-                return
-            else:
-                break
-        while (True):
-            if (matrix[red[1]][red[0]+1] == "."):
-                matrix[red[1]][red[0]] = "."
-                matrix[red[1]][red[0]+1] = "R"
-                red = [red[0]+1,red[1]]
-            elif (matrix[red[1]][red[0]+1] == "O"):
-                if (depth < result):
-                    result = depth
-                    resultCommand = command
-                return
-            else:
-                break
+    elif(d == 2):
+        if (t[1] >= 0 and t[1] < n and t[0]+1 >= 0 and t[0]+1 < n):
+            matrix[t[1]][t[0]+1]+= matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
+        else:
+            ans += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
+        if (t[1] >= 0 and t[1] < n and t[0]+2 >= 0 and t[0]+2 < n):
+            matrix[t[1]][t[0]+2]+= int((matrix[t[1]][t[0]]/100)*5)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*5)
+        if (t[1]-1 >= 0 and t[1]-1 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]-1][t[0]]+= int((matrix[t[1]][t[0]]/100)*7)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*7)
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]+1][t[0]]+= int((matrix[t[1]][t[0]]/100)*7)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*7)
+        if (t[1]+2 >= 0 and t[1]+2 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]+2][t[0]]+= int((matrix[t[1]][t[0]]/100)*2)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*2)
+        if (t[1]-2 >= 0 and t[1]-2 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1]-2][t[0]]+= int((matrix[t[1]][t[0]]/100)*2)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*2)
+        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]+1 >= 0 and t[0]+1 < n):
+            matrix[t[1]-1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*10)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*10)
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]+1 >= 0 and t[0]+1 < n):
+            matrix[t[1]+1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*10)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*10)
+        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]-1 >= 0 and t[0]-1 < n):
+            matrix[t[1]-1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*1)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*1)
+        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]-1 >= 0 and t[0]-1 < n):
+            matrix[t[1]+1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*1)
+        else:
+            ans += int((matrix[t[1]][t[0]]/100)*1)
+        matrix[t[1]][t[0]] = 0
+    elif(d == 3):
+        if (t[1] - 1 >= 0 and t[1] - 1 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1] - 1][t[0]] += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
+        else:
+            ans += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
+        if (t[1] - 2 >= 0 and t[1] - 2 < n and t[0] >= 0 and t[0] < n):
+            matrix[t[1] - 2][t[0]] += int((matrix[t[1]][t[0]] / 100) * 5)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 5)
+        if (t[1] >= 0 and t[1] < n and t[0] - 1 >= 0 and t[0] - 1 < n):
+            matrix[t[1]][t[0] - 1] += int((matrix[t[1]][t[0]] / 100) * 7)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 7)
+        if (t[1] >= 0 and t[1] < n and t[0] + 1 >= 0 and t[0] + 1 < n):
+            matrix[t[1]][t[0] + 1] += int((matrix[t[1]][t[0]] / 100) * 7)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 7)
+        if (t[1] >= 0 and t[1] < n and t[0] + 2 >= 0 and t[0] + 2 < n):
+            matrix[t[1]][t[0] + 2] += int((matrix[t[1]][t[0]] / 100) * 2)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 2)
+        if (t[1] >= 0 and t[1] < n and t[0] - 2 >= 0 and t[0] - 2 < n):
+            matrix[t[1]][t[0] - 2] += int((matrix[t[1]][t[0]] / 100) * 2)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 2)
+        if (t[1] + 1 >= 0 and t[1] + 1 < n and t[0] + 1 >= 0 and t[0] + 1 < n):
+            matrix[t[1] + 1][t[0] + 1] += int((matrix[t[1]][t[0]] / 100) * 1)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 1)
+        if (t[1] + 1 >= 0 and t[1] + 1 < n and t[0] - 1 >= 0 and t[0] - 1 < n):
+            matrix[t[1] + 1][t[0] - 1] += int((matrix[t[1]][t[0]] / 100) * 1)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 1)
+        if (t[1] - 1 >= 0 and t[1] - 1 < n and t[0] + 1 >= 0 and t[0] + 1 < n):
+            matrix[t[1] - 1][t[0] + 1] += int((matrix[t[1]][t[0]] / 100) * 10)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 10)
+        if (t[1] - 1 >= 0 and t[1] - 1 < n and t[0] - 1 >= 0 and t[0] - 1 < n):
+            matrix[t[1] - 1][t[0] - 1] += int((matrix[t[1]][t[0]] / 100) * 10)
+        else:
+            ans += int((matrix[t[1]][t[0]] / 100) * 10)
+        matrix[t[1]][t[0]] = 0
 
-
-    for i in range(4):
-        if (i != direction):
-            dfs(copy.deepcopy(matrix), i, depth+1, copy.deepcopy(red), copy.deepcopy(blue), command)
-
-
-for i in range(4):
-    dfs(copy.deepcopy(matrix),i,1,copy.deepcopy(red),copy.deepcopy(blue),command)
-
-if(result <= 10):
-    print(result)
-    print(resultCommand)
-else:
-    print(-1)
+tornado()
+print(ans)
