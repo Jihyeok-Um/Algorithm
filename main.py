@@ -1,208 +1,79 @@
+from collections import deque
+import copy
+q = deque()
+
 n = int(input())
+dy = [-1,1,0,0]
+dx = [0,0,-1,1]
 matrix = []
 check = [[0 for i in range(n)] for i in range(n)]
-dy = [0,1,0,-1]
-dx = [-1,0,1,0]
-t = [int(n/2), int(n/2)]
+bfsCheck = [[0 for i in range(n)] for i in range(n)]
+visit = [[False for i in range(n)] for i in range(n)]
+fish = [0 for i in range(400)]
+sharkSize = 2
+eaten = 0
+time = 0
 for i in range(n):
     matrix.append(list(map(int, input().split())))
-check[t[0]][t[1]] = 0
-def tornado():
-    count = 1
-    while(t != [0,0]):
-        for i in range(0,2):
-            for j in range(count):
-                if (t[0]+dx[i] >= 0 and t[0]+dx[i] < n and t[1]+dy[i] >= 0 and t[1]+dy[i] < n):
-                    check[t[1]+dy[i]][t[0]+dx[i]] = check[t[1]][t[0]] + 1
-                    t[0] = t[0]+dx[i]
-                    t[1] = t[1]+dy[i]
-                    sand(i)
-                    if(t == [0,0]):
-                        return
-        count += 1
-        for i in range(2,4):
-            for j in range(count):
-                if (t[0]+dx[i] >= 0 and t[0]+dx[i] < n and t[1]+dy[i] >= 0 and t[1]+dy[i] < n):
-                    check[t[1] + dy[i]][t[0] + dx[i]] = check[t[1]][t[0]] + 1
-                    t[0] = t[0]+dx[i]
-                    t[1] = t[1]+dy[i]
-                    sand(i)
-                    if (t == [0, 0]):
-                        return
-        count += 1
 
-ans = 0
-def sand(d):
-    global ans
-    if(d == 1):
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]+1][t[0]]+= matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
-        else:
-            ans += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
-        if (t[1]+2 >= 0 and t[1]+2 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]+2][t[0]]+= int((matrix[t[1]][t[0]]/100)*5)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*5)
-        if (t[1] >= 0 and t[1] < n and t[0]-1 >= 0 and t[0]-1 < n):
-            matrix[t[1]][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*7)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*7)
-        if (t[1] >= 0 and t[1] < n and t[0]+1 >= 0 and t[0]+1 < n):
-            matrix[t[1]][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*7)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*7)
-        if (t[1] >= 0 and t[1] < n and t[0]+2 >= 0 and t[0]+2 < n):
-            matrix[t[1]][t[0]+2]+= int((matrix[t[1]][t[0]]/100)*2)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*2)
-        if (t[1] >= 0 and t[1] < n and t[0]-2 >= 0 and t[0]-2 < n):
-            matrix[t[1]][t[0]-2]+= int((matrix[t[1]][t[0]]/100)*2)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*2)
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]+1 >= 0 and t[0]+1 < n):
-            matrix[t[1]+1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*10)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*10)
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]-1 >= 0 and t[0]-1 < n):
-            matrix[t[1]+1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*10)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*10)
-        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]+1 >= 0 and t[0]+1 < n):
-            matrix[t[1]-1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*1)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*1)
-        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]-1 >= 0 and t[0]-1 < n):
-            matrix[t[1]-1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*1)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*1)
-        matrix[t[1]][t[0]] = 0
-    elif(d == 0):
-        if (t[1] >= 0 and t[1] < n and t[0]-1 >= 0 and t[0]-1 < n):
-            matrix[t[1]][t[0]-1]+= matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
-        else:
-            ans += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
-        if (t[1] >= 0 and t[1] < n and t[0]-2 >= 0 and t[0]-2 < n):
-            matrix[t[1]][t[0]-2]+= int((matrix[t[1]][t[0]]/100)*5)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*5)
-        if (t[1]-1 >= 0 and t[1]-1 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]-1][t[0]]+= int((matrix[t[1]][t[0]]/100)*7)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*7)
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]+1][t[0]]+= int((matrix[t[1]][t[0]]/100)*7)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*7)
-        if (t[1]+2 >= 0 and t[1]+2 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]+2][t[0]]+= int((matrix[t[1]][t[0]]/100)*2)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*2)
-        if (t[1]-2 >= 0 and t[1]-2 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]-2][t[0]]+= int((matrix[t[1]][t[0]]/100)*2)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*2)
-        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]-1 >= 0 and t[0]-1 < n):
-            matrix[t[1]-1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*10)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*10)
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]-1 >= 0 and t[0]-1 < n):
-            matrix[t[1]+1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*10)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*10)
-        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]+1 >= 0 and t[0]+1 < n):
-            matrix[t[1]-1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*1)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*1)
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]+1 >= 0 and t[0]+1 < n):
-            matrix[t[1]+1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*1)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*1)
-        matrix[t[1]][t[0]] = 0
+for i in range(n):
+    for j in range(n):
+        if(matrix[i][j] == 9):
+            bfsCheck[i][j] = 9
+            q.append([j,i])
+        elif(matrix[i][j] >= 1 and matrix[i][j] <= 6):
+            fish[matrix[i][j]] += 1
+            if (matrix[i][j] < sharkSize):
+                bfsCheck[i][j] = matrix[i][j]
+            elif (matrix[i][j] > sharkSize):
+                bfsCheck[i][j] = -1
+                check[i][j] = -1
 
-    elif(d == 2):
-        if (t[1] >= 0 and t[1] < n and t[0]+1 >= 0 and t[0]+1 < n):
-            matrix[t[1]][t[0]+1]+= matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
-        else:
-            ans += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
-        if (t[1] >= 0 and t[1] < n and t[0]+2 >= 0 and t[0]+2 < n):
-            matrix[t[1]][t[0]+2]+= int((matrix[t[1]][t[0]]/100)*5)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*5)
-        if (t[1]-1 >= 0 and t[1]-1 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]-1][t[0]]+= int((matrix[t[1]][t[0]]/100)*7)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*7)
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]+1][t[0]]+= int((matrix[t[1]][t[0]]/100)*7)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*7)
-        if (t[1]+2 >= 0 and t[1]+2 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]+2][t[0]]+= int((matrix[t[1]][t[0]]/100)*2)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*2)
-        if (t[1]-2 >= 0 and t[1]-2 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1]-2][t[0]]+= int((matrix[t[1]][t[0]]/100)*2)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*2)
-        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]+1 >= 0 and t[0]+1 < n):
-            matrix[t[1]-1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*10)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*10)
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]+1 >= 0 and t[0]+1 < n):
-            matrix[t[1]+1][t[0]+1]+= int((matrix[t[1]][t[0]]/100)*10)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*10)
-        if (t[1]-1 >= 0 and t[1]-1 < n and t[0]-1 >= 0 and t[0]-1 < n):
-            matrix[t[1]-1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*1)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*1)
-        if (t[1]+1 >= 0 and t[1]+1 < n and t[0]-1 >= 0 and t[0]-1 < n):
-            matrix[t[1]+1][t[0]-1]+= int((matrix[t[1]][t[0]]/100)*1)
-        else:
-            ans += int((matrix[t[1]][t[0]]/100)*1)
-        matrix[t[1]][t[0]] = 0
-    elif(d == 3):
-        if (t[1] - 1 >= 0 and t[1] - 1 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1] - 1][t[0]] += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
-        else:
-            ans += matrix[t[1]][t[0]]-(int((matrix[t[1]][t[0]]/100)*5)+ int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*7) + int((matrix[t[1]][t[0]]/100)*2) + int((matrix[t[1]][t[0]]/100)*2) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*10) +int((matrix[t[1]][t[0]]/100)*1) +int((matrix[t[1]][t[0]]/100)*1))
-        if (t[1] - 2 >= 0 and t[1] - 2 < n and t[0] >= 0 and t[0] < n):
-            matrix[t[1] - 2][t[0]] += int((matrix[t[1]][t[0]] / 100) * 5)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 5)
-        if (t[1] >= 0 and t[1] < n and t[0] - 1 >= 0 and t[0] - 1 < n):
-            matrix[t[1]][t[0] - 1] += int((matrix[t[1]][t[0]] / 100) * 7)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 7)
-        if (t[1] >= 0 and t[1] < n and t[0] + 1 >= 0 and t[0] + 1 < n):
-            matrix[t[1]][t[0] + 1] += int((matrix[t[1]][t[0]] / 100) * 7)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 7)
-        if (t[1] >= 0 and t[1] < n and t[0] + 2 >= 0 and t[0] + 2 < n):
-            matrix[t[1]][t[0] + 2] += int((matrix[t[1]][t[0]] / 100) * 2)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 2)
-        if (t[1] >= 0 and t[1] < n and t[0] - 2 >= 0 and t[0] - 2 < n):
-            matrix[t[1]][t[0] - 2] += int((matrix[t[1]][t[0]] / 100) * 2)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 2)
-        if (t[1] + 1 >= 0 and t[1] + 1 < n and t[0] + 1 >= 0 and t[0] + 1 < n):
-            matrix[t[1] + 1][t[0] + 1] += int((matrix[t[1]][t[0]] / 100) * 1)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 1)
-        if (t[1] + 1 >= 0 and t[1] + 1 < n and t[0] - 1 >= 0 and t[0] - 1 < n):
-            matrix[t[1] + 1][t[0] - 1] += int((matrix[t[1]][t[0]] / 100) * 1)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 1)
-        if (t[1] - 1 >= 0 and t[1] - 1 < n and t[0] + 1 >= 0 and t[0] + 1 < n):
-            matrix[t[1] - 1][t[0] + 1] += int((matrix[t[1]][t[0]] / 100) * 10)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 10)
-        if (t[1] - 1 >= 0 and t[1] - 1 < n and t[0] - 1 >= 0 and t[0] - 1 < n):
-            matrix[t[1] - 1][t[0] - 1] += int((matrix[t[1]][t[0]] / 100) * 10)
-        else:
-            ans += int((matrix[t[1]][t[0]] / 100) * 10)
-        matrix[t[1]][t[0]] = 0
+def bfs():
+    while(q):
+        p = q.popleft()
+        visit[p[1]][p[0]] = True
+        for i in range(4):
+            if(p[0]+dx[i]>=0 and p[0]+dx[i]<n and p[1]+dy[i]>=0 and p[1]+dy[i]<n and check[p[1]+dy[i]][p[0]+dx[i]] != -1 and visit[p[1]+dy[i]][p[0]+dx[i]] == False):
+                check[p[1]+dy[i]][p[0]+dx[i]] = check[p[1]][p[0]] + 1
+                q.append([p[0]+dx[i],p[1]+dy[i]])
 
-tornado()
-print(ans)
+
+while(True):
+    total = 0
+    for i in range(sharkSize):
+        total += fish[i]
+    if (total == 0):
+        break
+    eatFish = [0]
+    shortest = n*n
+    bfs()
+    for i in range(n-1,-1,-1):
+        for j in range(n-1,-1,-1):
+            if (check[i][j] <= shortest and bfsCheck[i][j] != 9 and bfsCheck[i][j] != 0 and check[i][j] != -1 and (sharkSize > matrix[i][j])):
+                shortest = check[i][j]
+                eatFish[0] = [j,i]
+            elif (bfsCheck[i][j] == 9):
+                bfsCheck[i][j] = 0
+                matrix[i][j] = 0
+    fish[matrix[eatFish[0][1]][eatFish[0][0]]] -= 1
+    bfsCheck[eatFish[0][1]][eatFish[0][0]] = 9
+    matrix[eatFish[0][1]][eatFish[0][0]] = 9
+    eaten += 1
+    time += shortest
+    if (eaten == sharkSize):
+        eaten = 0
+        sharkSize += 1
+    check = [[0 for i in range(n)] for i in range(n)]
+    visit = [[False for i in range(n)] for i in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if (matrix[i][j] == 9):
+                q.append([j,i])
+            elif (matrix[i][j] >= 1 and matrix[i][j] <= 6):
+                if (matrix[i][j] < sharkSize):
+                    bfsCheck[i][j] = matrix[i][j]
+                elif (matrix[i][j] > sharkSize):
+                    check[i][j] = -1
+
+print(time)
