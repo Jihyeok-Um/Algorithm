@@ -1,15 +1,18 @@
-t = int(input())
-for i in range(t):
-    isNo = False
-    n = int(input())
-    num = []
-    for j in range(n):
-        num.append((input()))
-    num.sort()
-    for j in range(len(num) - 1):
-        if (num[j] == num[j + 1][0:len(num[j])]):
-            print("NO")
-            isNo = True
-            break
-    if (isNo == False):
-        print("YES")
+import sys
+input = sys.stdin.readline
+
+fullStr = list(input().rstrip())
+exStr = list(input().rstrip())
+stack = []
+for i in range(len(fullStr)):
+    stack.append(fullStr[i])
+    if len(stack) >= len(exStr) and stack[-1] == exStr[-1]:
+        if stack[-len(exStr):] == exStr:
+            for j in range(len(exStr)):
+                stack.pop()
+
+
+if stack:
+    print("".join(stack))
+else:
+    print("FRULA")
