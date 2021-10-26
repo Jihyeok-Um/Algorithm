@@ -1,24 +1,10 @@
-
-
-S = input()
-T = input()
-isGet = False
-
-def getT(T):
-    global isGet
-    if T == S:
-        print(1)
-        isGet = True
-        return
-    if len(T) <= len(S):
-        return
-
-    if T[-1] == 'A':
-        T = T[:-1]
-    else:
-        T = T[:-1]
-        T = T[::-1]
-    getT(T)
-getT(T)
-if isGet == False:
-    print(0)
+import re
+string = input()
+p = re.compile('(100+1+|01)+')
+m = p.match(string)
+if (m != None and m[0] == string):
+    print(m[0])
+    print("SUBMARINE")
+else:
+    print(m[0])
+    print("NOISE")
