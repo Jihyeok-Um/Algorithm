@@ -23,6 +23,7 @@ for i in range(len(bracket)):
 ans = []
 depth = 0
 combi.sort()
+
 def delBracket(s,depth):
     global string
     result = ""
@@ -40,5 +41,6 @@ def delBracket(s,depth):
     delBracket(copy.deepcopy(s), depth+1)
 
 delBracket(copy.deepcopy(string), 0)
+ans.sort()
 for i in range(1,len(ans)):
     print(ans[i])
