@@ -1,46 +1,33 @@
 import sys
-from collections import deque
-import copy
-stack = []
-string = list(sys.stdin.readline().rstrip())
-bracketNum = 0
-bracketNum2 = 0
-temp = 0
-bracket = [[0,0] for i in range(10)]
-for i in range(len(string)):
-    if string[i] == '(':
-        stack.append(['(',i])
-    elif string[i] == ')':
-        b1 = stack.pop()
-        bracket[temp] = [b1[1],i]
-        temp += 1
+final = False
+t = int(input())
+for i in range(t):
+    array = list(sys.stdin.readline().rstrip())
+    for k in range(len(array)):
+        array[k] = ord(array[k])
 
-combi = []
-for i in range(len(bracket)):
-    if (bracket[i] == [0,0]):
-        continue
-    combi.append(bracket[i])
-ans = []
-depth = 0
-combi.sort()
+    i = len(array)-1
+    while (i > 0 and array[i-1] > array[i]):
+        i -= 1
 
-def delBracket(s,depth):
-    global string
-    result = ""
-    if (depth == temp):
-        for i in range(len(s)):
-            if (s[i] != '!'):
-                result += s[i]
-        if (result not in ans):
-            ans.append(result)
-        return
+    if (i == 0):
+        for k in array:
+            print(chr(k),end='')
+        print()
+        final = True
 
-    delBracket(copy.deepcopy(s), depth+1)
-    s[combi[depth][0]] = "!"
-    s[combi[depth][1]] = "!"
-    delBracket(copy.deepcopy(s), depth+1)
+    j = len(array)-1
+    while (array[j] < array[i-1]):
+        j -= 1
+    array[j], array[i-1] = array[i-1], array[j]
 
-delBracket(copy.deepcopy(string), 0)
-ans.sort()
-for i in range(1,len(ans)):
-    print(ans[i])
+    j = len(array) - 1
+    while (i <= j):
+        array[j], array[i] = array[i], array[j]
+        i += 1
+        j -= 1
+
+    if final == False:
+        for k in array:
+            print(chr(k), end='')
+        print()
