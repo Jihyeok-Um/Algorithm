@@ -1,35 +1,24 @@
 from collections import deque
+n,k = map(int,input().split())
+matrix = [-1 for i in range(200001)]
+q = deque()
+ok = 0
 
+q.append(n)
+matrix[n] = 0
+while(q):
+    x = q.popleft()
+    if(x == k):
+        ok += 1
+    if (x-1 >= 0 and (matrix[x-1] == -1 or matrix[x-1]>=matrix[x]+1)):
+        q.append(x-1)
+        matrix[x-1] = matrix[x] + 1
+    if (x+1 < 200000 and (matrix[x+1] == -1 or matrix[x+1]>=matrix[x]+1)):
+        q.append(x+1)
+        matrix[x+1] = matrix[x] + 1
+    if (x*2 < 200000 and (matrix[x*2] == -1 or matrix[x*2]>=matrix[x]+1)):
+        q.append(x*2)
+        matrix[x*2] = matrix[x] + 1
 
-def solution(priorities, location):
-    q = deque()
-    for i in priorities:
-        q.append(i)
-
-    count = 0
-    location += 1
-    while (q):
-        temp = q.popleft()
-        if (location > 0):
-            location -= 1
-
-        if (len(q) >= 1 and temp >= max(q)):
-            count += 1
-            if (location == 0):
-                print(count)
-                return
-        elif (len(q) == 0):
-            count += 1
-            if (location == 0):
-                print(count)
-                return
-        else:
-            q.append(temp)
-            if (location == 0):
-                location = len(q)
-
-t = int(input())
-for i in range(t):
-    n,m = map(int, input().split())
-    k = list(map(int, input().split()))
-    solution(k,m)
+print(matrix[k])
+print(ok)
